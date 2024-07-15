@@ -1,0 +1,461 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuite errors="0" failures="0" hostname="AZSL4" name="az.el.JavaEL_Test" skipped="0" tests="19" time="0.098" timestamp="2024-07-15T14:50:04">
+  <properties>
+    <property name="libs.jsp-compiler.javadoc" value="" />
+    <property name="netbeans.autoupdate.country" value="US" />
+    <property name="libs.jakartaee-web-api-8.0.src" value="" />
+    <property name="nb.wait.for.caches" value="true" />
+    <property name="libs.graaljs.maven-pom" value="" />
+    <property name="javac.test.classpath" value=":build/classes:C:\Program Files\NetBeans-22\netbeans\platform\modules\ext\junit-4.13.2.jar:C:\Program Files\NetBeans-22\netbeans\platform\modules\ext\hamcrest-core-1.3.jar" />
+    <property name="libs.jsf20.maven-pom" value="" />
+    <property name="javac.test.sourcepath" value="C:\PJ\PJ_AZ_java_lib\az-java-el\build\empty" />
+    <property name="maven.defaultProjectBuilder.disableGlobalModelCache" value="true" />
+    <property name="ant.core.lib" value="C:\Program Files\NetBeans-22\netbeans\extide\ant\lib\ant.jar" />
+    <property name="javadoc.windowtitle" value="" />
+    <property name="libs.jsp-compilation.javadoc" value="" />
+    <property name="user.dir" value="C:\PJ\PJ_AZ_java_lib\az-java-el" />
+    <property name="libs.javaee-api-7.0.src" value="" />
+    <property name="java.vm.version" value="25.271-b09" />
+    <property name="ant.file.az-java-el" value="C:\PJ\PJ_AZ_java_lib\az-java-el\build.xml" />
+    <property name="libs.jakartaee-web-api-8.0.maven-pom" value="" />
+    <property name="libs.eclipselinkmodelgen.src" value="" />
+    <property name="jlink.additionalmodules" value="" />
+    <property name="javadoc.notree" value="false" />
+    <property name="netbeans.autoupdate.version" value="1.23" />
+    <property name="libs.javaee-web-api-6.0.classpath" value="C:\Program Files\NetBeans-22\netbeans\enterprise\modules\ext\javaee-web-api-6.0.jar" />
+    <property name="javac.profile.cmd.line.arg" value="" />
+    <property name="jdk.home" value="C:\Program Files\Java\jdk-19" />
+    <property name="javadoc.noindex" value="false" />
+    <property name="sun.os.patch.level" value="" />
+    <property name="java.vm.specification.name" value="Java Virtual Machine Specification" />
+    <property name="netbeans.autoupdate.variant" value="" />
+    <property name="have.tests" value="true" />
+    <property name="org.xml.sax.driver" value="com.sun.org.apache.xerces.internal.jaxp.SAXParserImpl$JAXPSAXParser" />
+    <property name="libs.hamcrest.classpath" value="C:\Program Files\NetBeans-22\netbeans\platform\modules\ext\hamcrest-core-1.3.jar" />
+    <property name="os.name" value="Windows 10" />
+    <property name="libs.jakartaee-web-api-9.0.javadoc" value="C:\Program Files\NetBeans-22\netbeans\enterprise\docs\jakartaee9-doc-api.jar" />
+    <property name="libs.javaee-endorsed-api-7.0.maven-pom" value="" />
+    <property name="ap.proc.none.internal" value="" />
+    <property name="libs.restapi.javadoc" value="" />
+    <property name="libs.JWSAntTasks.maven-pom" value="" />
+    <property name="libs.jstl.classpath" value="C:\Program Files\NetBeans-22\netbeans\enterprise\modules\ext\jstl-impl.jar;C:\Program Files\NetBeans-22\netbeans\enterprise\modules\ext\jstl-api.jar" />
+    <property name="libs.testng.src" value="" />
+    <property name="libs.jakartaee-web-api-11.0.javadoc" value="C:\Program Files\NetBeans-22\netbeans\enterprise\docs\jakartaee11-doc-api.jar" />
+    <property name="libs.restapi.classpath" value="C:\Program Files\NetBeans-22\netbeans\enterprise\modules\ext\jaxrs-2.1\jakarta.ws.rs-api-2.1.6.jar" />
+    <property name="java.vendor.url.bug" value="http://bugreport.sun.com/bugreport/" />
+    <property name="libs.jaxb.maven-pom" value="" />
+    <property name="os.arch" value="amd64" />
+    <property name="libs.eclipselink.src" value="" />
+    <property name="user.name" value="arren" />
+    <property name="copylibs.rebase" value="true" />
+    <property name="libs.spring-webmvc5.0.javadoc" value="" />
+    <property name="libs.spring-framework500.classpath" value="C:\Program Files\NetBeans-22\netbeans\platform\modules\org-apache-commons-logging.jar;C:\Program Files\NetBeans-22\netbeans\java\modules\ext\cglib-2.2.jar;C:\Program Files\NetBeans-22\netbeans\java\modules\ext\spring-5\spring-aop-5.3.31.jar;C:\Program Files\NetBeans-22\netbeans\java\modules\ext\spring-5\spring-aspects-5.3.31.jar;C:\Program Files\NetBeans-22\netbeans\java\modules\ext\spring-5\spring-beans-5.3.31.jar;C:\Program Files\NetBeans-22\netbeans\java\modules\ext\spring-5\spring-context-5.3.31.jar;C:\Program Files\NetBeans-22\netbeans\java\modules\ext\spring-5\spring-context-indexer-5.3.31.jar;C:\Program Files\NetBeans-22\netbeans\java\modules\ext\spring-5\spring-context-support-5.3.31.jar;C:\Program Files\NetBeans-22\netbeans\java\modules\ext\spring-5\spring-core-5.3.31.jar;C:\Program Files\NetBeans-22\netbeans\java\modules\ext\spring-5\spring-expression-5.3.31.jar;C:\Program Files\NetBeans-22\netbeans\java\modules\ext\spring-5\spring-instrument-5.3.31.jar;C:\Program Files\NetBeans-22\netbeans\java\modules\ext\spring-5\spring-jcl-5.3.31.jar;C:\Program Files\NetBeans-22\netbeans\java\modules\ext\spring-5\spring-jdbc-5.3.31.jar;C:\Program Files\NetBeans-22\netbeans\java\modules\ext\spring-5\spring-jms-5.3.31.jar;C:\Program Files\NetBeans-22\netbeans\java\modules\ext\spring-5\spring-messaging-5.3.31.jar;C:\Program Files\NetBeans-22\netbeans\java\modules\ext\spring-5\spring-orm-5.3.31.jar;C:\Program Files\NetBeans-22\netbeans\java\modules\ext\spring-5\spring-oxm-5.3.31.jar;C:\Program Files\NetBeans-22\netbeans\java\modules\ext\spring-5\spring-test-5.3.31.jar;C:\Program Files\NetBeans-22\netbeans\java\modules\ext\spring-5\spring-tx-5.3.31.jar;C:\Program Files\NetBeans-22\netbeans\java\modules\ext\spring-5\spring-web-5.3.31.jar;C:\Program Files\NetBeans-22\netbeans\java\modules\ext\spring-5\spring-webflux-5.3.31.jar;C:\Program Files\NetBeans-22\netbeans\java\modules\ext\spring-5\spring-webmvc-5.3.31.jar;C:\Program Files\NetBeans-22\netbeans\java\modules\ext\spring-5\spring-websocket-5.3.31.jar" />
+    <property name="sun.java.command" value="org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner az.el.JavaEL_Test skipNonTests=false filtertrace=true haltOnError=false haltOnFailure=false showoutput=true outputtoformatters=true logfailedtests=true threadid=0 logtestlistenerevents=true formatter=org.apache.tools.ant.taskdefs.optional.junit.BriefJUnitResultFormatter formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,C:\PJ\PJ_AZ_java_lib\az-java-el\build\test\results\TEST-az.el.JavaEL_Test.xml crashfile=C:\PJ\PJ_AZ_java_lib\az-java-el\build\junitvmwatcher15875681811497988069.properties propsfile=C:\PJ\PJ_AZ_java_lib\az-java-el\build\junit3923679127996461713.properties" />
+    <property name="build.classes.dir" value="build/classes" />
+    <property name="build.sysclasspath" value="ignore" />
+    <property name="manifest.encoding" value="UTF-8" />
+    <property name="ap.supported.internal" value="true" />
+    <property name="java.failonerror" value="true" />
+    <property name="libs.javaee-api-8.0.maven-pom" value="" />
+    <property name="run.modulepath" value="" />
+    <property name="libs.javaee-endorsed-api-7.0.javadoc" value="C:\Program Files\NetBeans-22\netbeans\enterprise\docs\javaee-doc-api.jar" />
+    <property name="libs.jaxws21.javadoc" value="C:\Program Files\NetBeans-22\netbeans\java\docs\jaxws-api-doc.zip" />
+    <property name="jdk.debug" value="release" />
+    <property name="includes" value="**" />
+    <property name="user.country" value="US" />
+    <property name="javadoc.encoding" value="UTF-8" />
+    <property name="platform.home" value="C:\Program Files\Java\jdk1.8.0_271" />
+    <property name="javac.classpath" value="" />
+    <property name="libs.jsp-compilation-syscp.src" value="" />
+    <property name="libs.jakartaee-web-api-11.0.classpath" value="C:\Program Files\NetBeans-22\netbeans\enterprise\modules\ext\jakarta.jakartaee-web-api-11.0.0.jar" />
+    <property name="platform.bootcp" value="C:\Program Files\Java\jdk1.8.0_271\jre\lib\resources.jar;C:\Program Files\Java\jdk1.8.0_271\jre\lib\rt.jar;C:\Program Files\Java\jdk1.8.0_271\jre\lib\sunrsasign.jar;C:\Program Files\Java\jdk1.8.0_271\jre\lib\jsse.jar;C:\Program Files\Java\jdk1.8.0_271\jre\lib\jce.jar;C:\Program Files\Java\jdk1.8.0_271\jre\lib\charsets.jar;C:\Program Files\Java\jdk1.8.0_271\jre\lib\jfr.jar;C:\Program Files\Java\jdk1.8.0_271\jre\classes;C:\Program Files\Java\jdk1.8.0_271\jre\lib\ext\access-bridge-64.jar;C:\Program Files\Java\jdk1.8.0_271\jre\lib\ext\cldrdata.jar;C:\Program Files\Java\jdk1.8.0_271\jre\lib\ext\dnsns.jar;C:\Program Files\Java\jdk1.8.0_271\jre\lib\ext\jaccess.jar;C:\Program Files\Java\jdk1.8.0_271\jre\lib\ext\jfxrt.jar;C:\Program Files\Java\jdk1.8.0_271\jre\lib\ext\localedata.jar;C:\Program Files\Java\jdk1.8.0_271\jre\lib\ext\nashorn.jar;C:\Program Files\Java\jdk1.8.0_271\jre\lib\ext\sunec.jar;C:\Program Files\Java\jdk1.8.0_271\jre\lib\ext\sunjce_provider.jar;C:\Program Files\Java\jdk1.8.0_271\jre\lib\ext\sunmscapi.jar;C:\Program Files\Java\jdk1.8.0_271\jre\lib\ext\sunpkcs11.jar;C:\Program Files\Java\jdk1.8.0_271\jre\lib\ext\zipfs.jar" />
+    <property name="debug-transport" value="dt_shmem" />
+    <property name="netbeans.home" value="C:\Program Files\NetBeans-22\netbeans\platform" />
+    <property name="build.compiler.emacs" value="true" />
+    <property name="libs.javaee-web-api-6.0.src" value="" />
+    <property name="libs.jakartaee-api-10.0.src" value="" />
+    <property name="libs.jsp-compilation-syscp.classpath" value="C:\Program Files\NetBeans-22\netbeans\extide\ant\lib\ant.jar;C:\Program Files\NetBeans-22\netbeans\enterprise\modules\ext\servlet4.0-jsp2.3-api.jar;C:\Program Files\NetBeans-22\netbeans\enterprise\modules\ext\glassfish-jspparser-5.1.0.jar;C:\Program Files\NetBeans-22\netbeans\enterprise\modules\ext\jstl-impl.jar;C:\Program Files\NetBeans-22\netbeans\enterprise\modules\ext\jsf-2_2\javax.faces.jar" />
+    <property name="javac.modulepath" value="" />
+    <property name="java.endorsed.dirs" value="C:\Program Files\Java\jdk1.8.0_271\jre\lib\endorsed" />
+    <property name="user.language.format" value="zh" />
+    <property name="libs.groovy-all.src" value="" />
+    <property name="libs.junit_5.src" value="C:\Program Files\NetBeans-22\netbeans\platform\docs\junit-jupiter-api-5.10.2-sources.jar;C:\Program Files\NetBeans-22\netbeans\platform\docs\junit-jupiter-params-5.10.2-sources.jar;C:\Program Files\NetBeans-22\netbeans\platform\docs\junit-jupiter-engine-5.10.2-sources.jar" />
+    <property name="libs.jakartaee-api-8.0.classpath" value="C:\Program Files\NetBeans-22\netbeans\enterprise\modules\ext\jakarta.jakartaee-api-8.0.0.jar" />
+    <property name="netbeans.dynamic.classpath" value="C:\Program Files\NetBeans-22\netbeans\platform\core\asm-9.7.jar;C:\Program Files\NetBeans-22\netbeans\platform\core\asm-commons-9.7.jar;C:\Program Files\NetBeans-22\netbeans\platform\core\asm-tree-9.7.jar;C:\Program Files\NetBeans-22\netbeans\platform\core\core-base.jar;C:\Program Files\NetBeans-22\netbeans\platform\core\core.jar;C:\Program Files\NetBeans-22\netbeans\platform\core\org-netbeans-libs-asm.jar;C:\Program Files\NetBeans-22\netbeans\platform\core\org-openide-filesystems-compat8.jar;C:\Program Files\NetBeans-22\netbeans\platform\core\org-openide-filesystems.jar;C:\Program Files\NetBeans-22\netbeans\nb\core\org-netbeans-upgrader.jar;C:\Program Files\NetBeans-22\netbeans\nb\core\locale\core_nb.jar" />
+    <property name="java.vm.specification.version" value="1.8" />
+    <property name="plugin.manager.check.updates" value="false" />
+    <property name="libs.primefaces.classpath" value="C:\Program Files\NetBeans-22\netbeans\enterprise\modules\ext\primefaces\primefaces-5.0.jar" />
+    <property name="libs.javaee-api-6.0.classpath" value="C:\Program Files\NetBeans-22\netbeans\enterprise\modules\ext\javaee-api-6.0.jar" />
+    <property name="libs.groovy-all.maven-pom" value="" />
+    <property name="netbeans.productversion" value="Apache NetBeans IDE 22" />
+    <property name="libs.jaxws21.src" value="" />
+    <property name="do.archive" value="true" />
+    <property name="libs.spring-webmvc5.0.classpath" value="C:\Program Files\NetBeans-22\netbeans\java\modules\ext\spring-5\spring-webmvc-5.3.31.jar" />
+    <property name="netbeans.autoupdate.language" value="en" />
+    <property name="java.vendor" value="Oracle Corporation" />
+    <property name="libs.javaee-api-6.0.javadoc" value="C:\Program Files\NetBeans-22\netbeans\enterprise\docs\javaee-doc-api.jar" />
+    <property name="jar.index.metainf" value="false" />
+    <property name="libs.jakartaee-api-11.0.classpath" value="C:\Program Files\NetBeans-22\netbeans\enterprise\modules\ext\jakarta.jakartaee-api-11.0.0.jar" />
+    <property name="javac.debug" value="true" />
+    <property name="javadoc.splitindex" value="true" />
+    <property name="file.separator" value="\" />
+    <property name="libs.junit_4.maven-pom" value="" />
+    <property name="mkdist.disabled" value="true" />
+    <property name="javac.test.processorpath" value=":build/classes:C:\Program Files\NetBeans-22\netbeans\platform\modules\ext\junit-4.13.2.jar:C:\Program Files\NetBeans-22\netbeans\platform\modules\ext\hamcrest-core-1.3.jar" />
+    <property name="netbeans.buildnumber" value="22-0d0bfcf3faf364a2643238f2a44e1bb6eb8217bd" />
+    <property name="libs.JWSAntTasks.javadoc" value="" />
+    <property name="build.generated.sources.dir" value="build/generated-sources" />
+    <property name="user.variant" value="" />
+    <property name="libs.eclipselinkmodelgen.classpath" value="C:\Program Files\NetBeans-22\netbeans\java\modules\ext\eclipselink\org.eclipse.persistence.jpa.modelgen.processor-2.7.12.jar" />
+    <property name="libs.javaee-endorsed-api-7.0.src" value="" />
+    <property name="sun.java.launcher" value="SUN_STANDARD" />
+    <property name="libs.jaxb.javadoc" value="C:\Program Files\NetBeans-22\netbeans\ide\docs\jaxb-api-doc.jar" />
+    <property name="ant.home" value="C:\Program Files\NetBeans-22\netbeans\extide\ant" />
+    <property name="libs.junit_4.src" value="C:\Program Files\NetBeans-22\netbeans\platform\docs\junit-4.13.2-sources.jar" />
+    <property name="apple.awt.application.appearance" value="system" />
+    <property name="libs.testng.classpath" value="C:\Program Files\NetBeans-22\netbeans\platform\modules\ext\testng-6.14.3.jar;C:\Program Files\NetBeans-22\netbeans\platform\modules\ext\jcommander-1.78.jar" />
+    <property name="libs.absolutelayout.maven-pom" value="" />
+    <property name="ant.java.version" value="19" />
+    <property name="java.library.path" value="C:\Program Files\Java\jdk1.8.0_271\bin;C:\WINDOWS\Sun\Java\bin;C:\WINDOWS\system32;C:\WINDOWS;C:\Program Files\Common Files\Oracle\Java\javapath;C:\Program Files (x86)\Common Files\Oracle\Java\java8path;C:\Program Files (x86)\Common Files\Oracle\Java\javapath;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\WINDOWS\System32\OpenSSH\;C:\Program Files\PostgreSQL\13\bin;C:\Program Files\dotnet\;C:\Program Files\Git\cmd;C:\Program Files\Cloudflare\Cloudflare WARP\;C:\Users\arren\AppData\Local\Microsoft\WindowsApps;C:\Users\arren\.dotnet\tools;C:\Program Files\JetBrains\IntelliJ IDEA Community Edition 2021.1.2\bin;;C:\Users\arren\AppData\Local\Android\Sdk\platform-tools;;C:\Users\arren\AppData\Local\Programs\Microsoft VS Code\bin;." />
+    <property name="javadoc.author" value="false" />
+    <property name="libs.metro.maven-pom" value="" />
+    <property name="java.util.logging.config.class" value="org.netbeans.core.startup.TopLogging" />
+    <property name="libs.PostgreSQLDriver.src" value="" />
+    <property name="libs.graaljs.javadoc" value="" />
+    <property name="libs.jakartaee-web-api-9.0.maven-pom" value="" />
+    <property name="libs.jakartaee-api-10.0.classpath" value="C:\Program Files\NetBeans-22\netbeans\enterprise\modules\ext\jakarta.jakartaee-api-10.0.0.jar" />
+    <property name="libs.spring-framework500.javadoc" value="" />
+    <property name="libs.graaljs.src" value="" />
+    <property name="sun.arch.data.model" value="64" />
+    <property name="basedir" value="C:\PJ\PJ_AZ_java_lib\az-java-el" />
+    <property name="libs.jpa20-persistence.maven-pom" value="" />
+    <property name="jar.compress" value="false" />
+    <property name="libs.javaee-web-api-7.0.classpath" value="C:\Program Files\NetBeans-22\netbeans\enterprise\modules\ext\javaee-web-api-7.0.jar" />
+    <property name="path.separator" value=";" />
+    <property name="libs.javaee-web-api-6.0.javadoc" value="C:\Program Files\NetBeans-22\netbeans\enterprise\docs\javaee-doc-api.jar" />
+    <property name="ant.junit.enabletestlistenerevents" value="true" />
+    <property name="platform.javac" value="C:\Program Files\Java\jdk1.8.0_271/bin/javac" />
+    <property name="sun.io.unicode.encoding" value="UnicodeLittle" />
+    <property name="libs.jaxws21.classpath" value="C:\Program Files\NetBeans-22\netbeans\java\modules\ext\jaxws22\api\jakarta.jws-api.jar;C:\Program Files\NetBeans-22\netbeans\java\modules\ext\jaxws22\api\jakarta.xml.soap-api.jar;C:\Program Files\NetBeans-22\netbeans\java\modules\ext\jaxws22\api\jakarta.xml.ws-api.jar;C:\Program Files\NetBeans-22\netbeans\java\modules\ext\jaxws22\FastInfoset.jar;C:\Program Files\NetBeans-22\netbeans\java\modules\ext\jaxws22\gmbal-api-only.jar;C:\Program Files\NetBeans-22\netbeans\java\modules\ext\jaxws22\ha-api.jar;C:\Program Files\NetBeans-22\netbeans\java\modules\ext\jaxws22\jakarta.mail.jar;C:\Program Files\NetBeans-22\netbeans\java\modules\ext\jaxws22\jaxws-rt.jar;C:\Program Files\NetBeans-22\netbeans\java\modules\ext\jaxws22\jaxws-tools.jar;C:\Program Files\NetBeans-22\netbeans\java\modules\ext\jaxws22\management-api.jar;C:\Program Files\NetBeans-22\netbeans\java\modules\ext\jaxws22\mimepull.jar;C:\Program Files\NetBeans-22\netbeans\java\modules\ext\jaxws22\policy.jar;C:\Program Files\NetBeans-22\netbeans\java\modules\ext\jaxws22\saaj-impl.jar;C:\Program Files\NetBeans-22\netbeans\java\modules\ext\jaxws22\stax-ex.jar;C:\Program Files\NetBeans-22\netbeans\java\modules\ext\jaxws22\stax2-api.jar;C:\Program Files\NetBeans-22\netbeans\java\modules\ext\jaxws22\streambuffer.jar;C:\Program Files\NetBeans-22\netbeans\java\modules\ext\jaxws22\woodstox-core.jar;C:\Program Files\NetBeans-22\netbeans\ide\modules\ext\jaxb\api\jaxb-api.jar;C:\Program Files\NetBeans-22\netbeans\ide\modules\ext\jaxb\activation.jar;C:\Program Files\NetBeans-22\netbeans\ide\modules\ext\jaxb\jaxb-impl.jar;C:\Program Files\NetBeans-22\netbeans\ide\modules\ext\jaxb\jaxb-xjc.jar" />
+    <property name="dist.jlink.output" value="dist/jlink/az-java-el" />
+    <property name="truffle.UseFallbackRuntime" value="true" />
+    <property name="compile.on.save" value="true" />
+    <property name="user.language" value="en" />
+    <property name="testng.mode" value="testng" />
+    <property name="libs.JAXB-ENDORSED.maven-pom" value="" />
+    <property name="libs.eclipselink.maven-pom" value="" />
+    <property name="org.netbeans.io.suspend" value="0" />
+    <property name="test.binaryincludes" value="&lt;nothing&gt;" />
+    <property name="libs.primefaces.javadoc" value="" />
+    <property name="libs.jakartaee-web-api-10.0.maven-pom" value="" />
+    <property name="run.test.classpath" value=":build/classes:C:\Program Files\NetBeans-22\netbeans\platform\modules\ext\junit-4.13.2.jar:C:\Program Files\NetBeans-22\netbeans\platform\modules\ext\hamcrest-core-1.3.jar:build/test/classes" />
+    <property name="ant.project.invoked-targets" value="test" />
+    <property name="test.binaryexcludes" value="" />
+    <property name="sun.java2d.dpiaware" value="true" />
+    <property name="https.nonProxyHosts" value="localhost|127.0.0.1|AZSL4" />
+    <property name="libs.PostgreSQLDriver.maven-pom" value="" />
+    <property name="java.class.version" value="52.0" />
+    <property name="libs.javaee-endorsed-api-6.0.src" value="" />
+    <property name="libs.eclipselink.javadoc" value="C:\Program Files\NetBeans-22\netbeans\java\modules\ext\docs\jakarta.persistence-2.2.3-doc.zip" />
+    <property name="platforms.JDK_1.8.compiler" value="modern" />
+    <property name="libs.jsp-compilation.maven-pom" value="" />
+    <property name="user.properties.file" value="C:\Users\arren\AppData\Roaming\NetBeans\22\build.properties" />
+    <property name="runtime.encoding" value="UTF-8" />
+    <property name="file.encoding.pkg" value="sun.io" />
+    <property name="sun.cpu.endian" value="little" />
+    <property name="libs.JAXB-ENDORSED.javadoc" value="" />
+    <property name="libs.JWSAntTasks.classpath" value="C:\Program Files\NetBeans-22\netbeans\java\ant\extra\org-netbeans-modules-javawebstart-anttasks.jar" />
+    <property name="libs.jstl.src" value="" />
+    <property name="org.apache.commons.logging.LogFactory" value="org.apache.commons.logging.impl.LogFactoryImpl" />
+    <property name="empty.dir" value="C:\PJ\PJ_AZ_java_lib\az-java-el\build\empty" />
+    <property name="test.binarytestincludes" value="" />
+    <property name="javadoc.preview" value="true" />
+    <property name="libs.jpa20-persistence.javadoc" value="C:\Program Files\NetBeans-22\netbeans\java\modules\ext\docs\jakarta.persistence-2.2.3-doc.zip" />
+    <property name="java.home" value="C:\Program Files\Java\jdk1.8.0_271\jre" />
+    <property name="libs.jsp-compilation.src" value="" />
+    <property name="libs.jakartaee-web-api-8.0.javadoc" value="C:\Program Files\NetBeans-22\netbeans\enterprise\docs\jakartaee8-doc-api.jar" />
+    <property name="debug.test.classpath" value=":build/classes:C:\Program Files\NetBeans-22\netbeans\platform\modules\ext\junit-4.13.2.jar:C:\Program Files\NetBeans-22\netbeans\platform\modules\ext\hamcrest-core-1.3.jar:build/test/classes" />
+    <property name="libs.javaee-endorsed-api-6.0.classpath" value="C:\Program Files\NetBeans-22\netbeans\enterprise\modules\ext\javaee6-endorsed\javax.annotation.jar;C:\Program Files\NetBeans-22\netbeans\enterprise\modules\ext\javaee6-endorsed\jaxb-api-osgi.jar;C:\Program Files\NetBeans-22\netbeans\enterprise\modules\ext\javaee6-endorsed\webservices-api-osgi.jar" />
+    <property name="libs.javaee-api-6.0.src" value="" />
+    <property name="netbeans.importclass" value="org.netbeans.upgrade.AutoUpgrade" />
+    <property name="ant.project.default-target" value="default" />
+    <property name="annotation.processing.run.all.processors" value="true" />
+    <property name="jna.nosys" value="false" />
+    <property name="libs.jakartaee-web-api-11.0.src" value="" />
+    <property name="libs.jakartaee-web-api-10.0.javadoc" value="C:\Program Files\NetBeans-22\netbeans\enterprise\docs\jakartaee10-doc-api.jar" />
+    <property name="libs.PostgreSQLDriver.javadoc" value="" />
+    <property name="libs.restlib.classpath" value="C:\Program Files\NetBeans-22\netbeans\enterprise\modules\ext\jersey2\jakarta.annotation-api-2.1.1.jar;C:\Program Files\NetBeans-22\netbeans\enterprise\modules\ext\jersey2\jakarta.persistence-api-2.2.3.jar;C:\Program Files\NetBeans-22\netbeans\enterprise\modules\ext\jersey2\jakarta.servlet-api-4.0.4.jar;C:\Program Files\NetBeans-22\netbeans\enterprise\modules\ext\jersey2\jakarta.validation-api-2.0.2.jar;C:\Program Files\NetBeans-22\netbeans\enterprise\modules\ext\jersey2\jakarta.xml.bind-api-2.3.3.jar;C:\Program Files\NetBeans-22\netbeans\enterprise\modules\ext\jersey2\jersey-client-2.35.jar;C:\Program Files\NetBeans-22\netbeans\enterprise\modules\ext\jersey2\jersey-common-2.35.jar;C:\Program Files\NetBeans-22\netbeans\enterprise\modules\ext\jersey2\jersey-server-2.35.jar;C:\Program Files\NetBeans-22\netbeans\enterprise\modules\ext\jersey2\jersey-entity-filtering-2.35.jar;C:\Program Files\NetBeans-22\netbeans\enterprise\modules\ext\jersey2\jersey-hk2-2.35.jar;C:\Program Files\NetBeans-22\netbeans\enterprise\modules\ext\jersey2\jersey-media-moxy-2.35.jar;C:\Program Files\NetBeans-22\netbeans\enterprise\modules\ext\jersey2\jersey-container-servlet-2.35.jar;C:\Program Files\NetBeans-22\netbeans\enterprise\modules\ext\jersey2\jersey-container-servlet-core-2.35.jar;C:\Program Files\NetBeans-22\netbeans\enterprise\modules\ext\jersey2\hk2-api-2.6.1.jar;C:\Program Files\NetBeans-22\netbeans\enterprise\modules\ext\jersey2\hk2-locator-2.6.1.jar;C:\Program Files\NetBeans-22\netbeans\enterprise\modules\ext\jersey2\hk2-utils-2.6.1.jar;C:\Program Files\NetBeans-22\netbeans\enterprise\modules\ext\jersey2\jakarta.inject-2.6.1.jar;C:\Program Files\NetBeans-22\netbeans\enterprise\modules\ext\jersey2\aopalliance-repackaged-2.6.1.jar;C:\Program Files\NetBeans-22\netbeans\enterprise\modules\ext\jersey2\osgi.core-8.0.0.jar;C:\Program Files\NetBeans-22\netbeans\enterprise\modules\ext\jersey2\osgi-resource-locator-1.0.3.jar;C:\Program Files\NetBeans-22\netbeans\java\modules\ext\eclipselink\org.eclipse.persistence.core-2.7.12.jar;C:\Program Files\NetBeans-22\netbeans\java\modules\ext\eclipselink\org.eclipse.persistence.asm-9.4.0.jar;C:\Program Files\NetBeans-22\netbeans\java\modules\ext\eclipselink\org.eclipse.persistence.antlr-2.7.12.jar;C:\Program Files\NetBeans-22\netbeans\java\modules\ext\eclipselink\org.eclipse.persistence.jpa-2.7.12.jar;C:\Program Files\NetBeans-22\netbeans\java\modules\ext\eclipselink\org.eclipse.persistence.jpa.jpql-2.7.12.jar;C:\Program Files\NetBeans-22\netbeans\java\modules\ext\eclipselink\org.eclipse.persistence.moxy-2.7.12.jar" />
+    <property name="netbeans.extbrowser.manual_chrome_plugin_install" value="yes" />
+    <property name="libs.jakartaee-api-9.0.classpath" value="C:\Program Files\NetBeans-22\netbeans\enterprise\modules\ext\jakarta.jakartaee-api-9.0.0.jar" />
+    <property name="http.nonProxyHosts" value="localhost|127.0.0.1|AZSL4" />
+    <property name="libs.junit_4.javadoc" value="C:\Program Files\NetBeans-22\netbeans\platform\docs\junit-4.13.2-javadoc.jar" />
+    <property name="platforms.JDK_1.8.bootclasspath" value="C:\Program Files\Java\jdk1.8.0_271\jre\lib\resources.jar;C:\Program Files\Java\jdk1.8.0_271\jre\lib\rt.jar;C:\Program Files\Java\jdk1.8.0_271\jre\lib\sunrsasign.jar;C:\Program Files\Java\jdk1.8.0_271\jre\lib\jsse.jar;C:\Program Files\Java\jdk1.8.0_271\jre\lib\jce.jar;C:\Program Files\Java\jdk1.8.0_271\jre\lib\charsets.jar;C:\Program Files\Java\jdk1.8.0_271\jre\lib\jfr.jar;C:\Program Files\Java\jdk1.8.0_271\jre\classes;C:\Program Files\Java\jdk1.8.0_271\jre\lib\ext\access-bridge-64.jar;C:\Program Files\Java\jdk1.8.0_271\jre\lib\ext\cldrdata.jar;C:\Program Files\Java\jdk1.8.0_271\jre\lib\ext\dnsns.jar;C:\Program Files\Java\jdk1.8.0_271\jre\lib\ext\jaccess.jar;C:\Program Files\Java\jdk1.8.0_271\jre\lib\ext\jfxrt.jar;C:\Program Files\Java\jdk1.8.0_271\jre\lib\ext\localedata.jar;C:\Program Files\Java\jdk1.8.0_271\jre\lib\ext\nashorn.jar;C:\Program Files\Java\jdk1.8.0_271\jre\lib\ext\sunec.jar;C:\Program Files\Java\jdk1.8.0_271\jre\lib\ext\sunjce_provider.jar;C:\Program Files\Java\jdk1.8.0_271\jre\lib\ext\sunmscapi.jar;C:\Program Files\Java\jdk1.8.0_271\jre\lib\ext\sunpkcs11.jar;C:\Program Files\Java\jdk1.8.0_271\jre\lib\ext\zipfs.jar" />
+    <property name="javac.test.modulepath" value="" />
+    <property name="libs.javaee-web-api-6.0.maven-pom" value="" />
+    <property name="run.classpath" value=":build/classes" />
+    <property name="jna.boot.library.name" value="jnidispatch-nb" />
+    <property name="libs.javaee-endorsed-api-6.0.javadoc" value="C:\Program Files\NetBeans-22\netbeans\enterprise\docs\javaee-doc-api.jar" />
+    <property name="libs.javaee-api-7.0.classpath" value="C:\Program Files\NetBeans-22\netbeans\enterprise\modules\ext\javaee-api-7.0.jar" />
+    <property name="sun.awt.datatransfer.timeout" value="1000" />
+    <property name="libs.jakartaee-api-9.0.src" value="" />
+    <property name="annotation.processing.enabled.in.editor" value="false" />
+    <property name="libs.jakartaee-api-11.0.javadoc" value="C:\Program Files\NetBeans-22\netbeans\enterprise\docs\jakartaee11-doc-api.jar" />
+    <property name="nb.native.filechooser" value="false" />
+    <property name="libs.restapi.src" value="" />
+    <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers" />
+    <property name="javac.deprecation" value="false" />
+    <property name="javadoc.use" value="true" />
+    <property name="sun.java2d.noddraw" value="true" />
+    <property name="libs.jsp-compiler.classpath" value="C:\Program Files\NetBeans-22\netbeans\enterprise\ant\extra\jspcompile.jar" />
+    <property name="javac.processorpath" value="" />
+    <property name="libs.hamcrest.maven-pom" value="" />
+    <property name="libs.junit_5.classpath" value="C:\Program Files\NetBeans-22\netbeans\platform\modules\ext\junit-jupiter-api-5.10.2.jar;C:\Program Files\NetBeans-22\netbeans\platform\modules\ext\junit-jupiter-params-5.10.2.jar;C:\Program Files\NetBeans-22\netbeans\platform\modules\ext\junit-jupiter-engine-5.10.2.jar" />
+    <property name="javac.compilerargs" value="" />
+    <property name="ant.file" value="C:\PJ\PJ_AZ_java_lib\az-java-el\build.xml" />
+    <property name="libs.jstl.maven-pom" value="" />
+    <property name="libs.restapi.maven-pom" value="" />
+    <property name="java.vm.specification.vendor" value="Oracle Corporation" />
+    <property name="org.openide.major.version" value="IDE/1" />
+    <property name="java.vm.name" value="Java HotSpot(TM) 64-Bit Server VM" />
+    <property name="netbeans.user" value="C:\Users\arren\AppData\Roaming\NetBeans\22" />
+    <property name="javadoc.additionalparam" value="" />
+    <property name="java.io.tmpdir" value="C:\Users\arren\AppData\Local\Temp\" />
+    <property name="java.vendor.url" value="http://java.oracle.com/" />
+    <property name="endorsed.classpath.cmd.line.arg" value="" />
+    <property name="jna.loaded" value="true" />
+    <property name="junit.available" value="true" />
+    <property name="libs.javaee-web-api-8.0.classpath" value="C:\Program Files\NetBeans-22\netbeans\enterprise\modules\ext\javaee-web-api-8.0.jar" />
+    <property name="libs.jakartaee-api-9.0.javadoc" value="C:\Program Files\NetBeans-22\netbeans\enterprise\docs\jakartaee9-doc-api.jar" />
+    <property name="libs.jsp-compiler.src" value="" />
+    <property name="libs.jakartaee-web-api-9.0.classpath" value="C:\Program Files\NetBeans-22\netbeans\enterprise\modules\ext\jakarta.jakartaee-web-api-9.0.0.jar" />
+    <property name="sun.boot.library.path" value="C:\Program Files\Java\jdk1.8.0_271\jre\bin" />
+    <property name="have.sources" value="true" />
+    <property name="libs.graaljs.classpath" value="C:\Program Files\NetBeans-22\netbeans\webcommon\modules\ext\js-launcher-24.0.0.jar;C:\Program Files\NetBeans-22\netbeans\webcommon\modules\ext\js-language-24.0.0.jar;C:\Program Files\NetBeans-22\netbeans\webcommon\modules\ext\js-scriptengine-24.0.0.jar;C:\Program Files\NetBeans-22\netbeans\webcommon\modules\ext\regex-24.0.0.jar;C:\Program Files\NetBeans-22\netbeans\webcommon\modules\ext\icu4j-24.0.0.jar;C:\Program Files\NetBeans-22\netbeans\ide\modules\ext\collections-24.0.0.jar;C:\Program Files\NetBeans-22\netbeans\ide\modules\ext\jline-24.0.0.jar;C:\Program Files\NetBeans-22\netbeans\ide\modules\ext\jniutils-24.0.0.jar;C:\Program Files\NetBeans-22\netbeans\ide\modules\ext\launcher-common-24.0.0.jar;C:\Program Files\NetBeans-22\netbeans\ide\modules\ext\nativeimage-24.0.0.jar;C:\Program Files\NetBeans-22\netbeans\ide\modules\ext\polyglot-24.0.0.jar;C:\Program Files\NetBeans-22\netbeans\ide\modules\ext\word-24.0.0.jar;C:\Program Files\NetBeans-22\netbeans\ide\modules\ext\truffle-api-24.0.0.jar;C:\Program Files\NetBeans-22\netbeans\ide\modules\ext\truffle-compiler-24.0.0.jar;C:\Program Files\NetBeans-22\netbeans\ide\modules\ext\truffle-runtime-24.0.0.jar" />
+    <property name="libs.hamcrest.javadoc" value="" />
+    <property name="debug.classpath" value=":build/classes" />
+    <property name="javac.external.vm" value="true" />
+    <property name="javadoc.private" value="false" />
+    <property name="libs.jakartaee-api-8.0.src" value="" />
+    <property name="test.src.dir" value="test" />
+    <property name="libs.jakartaee-web-api-9.0.src" value="" />
+    <property name="libs.jsf20.classpath" value="C:\Program Files\NetBeans-22\netbeans\enterprise\modules\ext\jsf-2_2\javax.faces.jar" />
+    <property name="ap.processors.internal" value="" />
+    <property name="dist.jlink.dir" value="dist/jlink" />
+    <property name="libs.javaee-api-8.0.javadoc" value="C:\Program Files\NetBeans-22\netbeans\enterprise\docs\javaee-doc-api.jar" />
+    <property name="meta.inf.dir" value="src/META-INF" />
+    <property name="javadoc.encoding.used" value="UTF-8" />
+    <property name="ant.file.type.az-java-el" value="file" />
+    <property name="libs.jakartaee-web-api-11.0.maven-pom" value="" />
+    <property name="dist.jar" value="dist/az-java-el.jar" />
+    <property name="java.runtime.name" value="Java(TM) SE Runtime Environment" />
+    <property name="debug.test.modulepath" value="" />
+    <property name="ant.project.name" value="az-java-el" />
+    <property name="libs.spring-webmvc5.0.src" value="" />
+    <property name="flatlaf.updateUIOnSystemFontChange" value="false" />
+    <property name="netbeans.hash.code" value="unique=NB_EXTIDE_JAVA_WEBCOMMON_WEBEE0ad34a192-f101-4695-b00b-9c8589e93d6a_2ea022dc-b680-4bfd-9ac4-87851157e96f" />
+    <property name="ant.file.az-java-el-impl" value="C:\PJ\PJ_AZ_java_lib\az-java-el\nbproject\build-impl.xml" />
+    <property name="netbeans.default_userdir_root" value="C:\Users\arren\AppData\Roaming\NetBeans" />
+    <property name="libs.jsp-compilation-syscp.maven-pom" value="" />
+    <property name="platform.javadoc" value="C:\Program Files\Java\jdk1.8.0_271/bin/javadoc" />
+    <property name="platform.javadoc.tmp" value="${platforms.JDK_1.8.javadoc}" />
+    <property name="sun.cpu.isalist" value="amd64" />
+    <property name="libs.jakartaee-web-api-8.0.classpath" value="C:\Program Files\NetBeans-22\netbeans\enterprise\modules\ext\jakarta.jakartaee-web-api-8.0.0.jar" />
+    <property name="libs.CopyLibs.javadoc" value="" />
+    <property name="platform.compiler" value="${platforms.JDK_1.8.compile}" />
+    <property name="libs.jakartaee-api-8.0.maven-pom" value="" />
+    <property name="javadoc.html5" value="false" />
+    <property name="org.openide.specification.version" value="6.2" />
+    <property name="user.home" value="C:\Users\arren" />
+    <property name="annotation.processing.processors.list" value="" />
+    <property name="libs.primefaces.maven-pom" value="" />
+    <property name="libs.javaee-api-6.0.maven-pom" value="" />
+    <property name="platform.javac.tmp" value="${platforms.JDK_1.8.javac}" />
+    <property name="libs.JWSAntTasks.src" value="" />
+    <property name="jar.index" value="false" />
+    <property name="libs.CopyLibs.maven-pom" value="" />
+    <property name="libs.absolutelayout.javadoc" value="" />
+    <property name="java.specification.name" value="Java Platform API Specification" />
+    <property name="libs.spring-webmvc5.0.maven-pom" value="" />
+    <property name="java.specification.vendor" value="Oracle Corporation" />
+    <property name="java.version" value="1.8.0_271" />
+    <property name="run.jvmargs.ide" value="" />
+    <property name="javadoc.version" value="false" />
+    <property name="javac.processormodulepath" value="" />
+    <property name="org.openide.version" value="deprecated" />
+    <property name="stderr.encoding" value="UTF-8" />
+    <property name="platform.java" value="C:\Program Files\Java\jdk1.8.0_271/bin/java" />
+    <property name="source.encoding" value="UTF-8" />
+    <property name="java.vm.compressedOopsMode" value="Zero based" />
+    <property name="ap.cmd.line.internal" value="" />
+    <property name="libs.eclipselinkmodelgen.maven-pom" value="" />
+    <property name="libs.jsp-compilation-syscp.javadoc" value="" />
+    <property name="libs.javaee-web-api-8.0.src" value="" />
+    <property name="libs.eclipselinkmodelgen.javadoc" value="" />
+    <property name="libs.javaee-endorsed-api-7.0.classpath" value="C:\Program Files\NetBeans-22\netbeans\enterprise\modules\ext\javaee7-endorsed\javax.annotation-api.jar;C:\Program Files\NetBeans-22\netbeans\enterprise\modules\ext\javaee7-endorsed\javax.xml.soap-api.jar;C:\Program Files\NetBeans-22\netbeans\enterprise\modules\ext\javaee7-endorsed\jaxb-api-osgi.jar;C:\Program Files\NetBeans-22\netbeans\enterprise\modules\ext\javaee7-endorsed\jaxws-api.jar;C:\Program Files\NetBeans-22\netbeans\enterprise\modules\ext\javaee7-endorsed\jsr181-api.jar" />
+    <property name="libs.metro.javadoc" value="C:\Program Files\NetBeans-22\netbeans\enterprise\docs\webservices-api-javadoc.jar;C:\Program Files\NetBeans-22\netbeans\enterprise\docs\webservices-extra-javadoc.jar;C:\Program Files\NetBeans-22\netbeans\enterprise\docs\webservices-extra-api-javadoc.jar;C:\Program Files\NetBeans-22\netbeans\enterprise\docs\webservices-rt-javadoc.jar;C:\Program Files\NetBeans-22\netbeans\enterprise\docs\webservices-tools-javadoc.jar" />
+    <property name="netbeans.home+have.tests" value="true" />
+    <property name="annotation.processing.processor.options" value="" />
+    <property name="libs.testng.maven-pom" value="" />
+    <property name="libs.jaxb.src" value="" />
+    <property name="work.dir" value="C:\PJ\PJ_AZ_java_lib\az-java-el" />
+    <property name="libs.jaxb.classpath" value="C:\Program Files\NetBeans-22\netbeans\ide\modules\ext\jaxb\jaxb-impl.jar;C:\Program Files\NetBeans-22\netbeans\ide\modules\ext\jaxb\jaxb-xjc.jar;C:\Program Files\NetBeans-22\netbeans\ide\modules\ext\jaxb\activation.jar;C:\Program Files\NetBeans-22\netbeans\ide\modules\ext\jaxb\api\jaxb-api.jar" />
+    <property name="org.apache.commons.logging.Log" value="org.apache.commons.logging.impl.Jdk14Logger" />
+    <property name="libs.jakartaee-api-10.0.maven-pom" value="" />
+    <property name="do.depend" value="false" />
+    <property name="dist.javadoc.dir" value="dist/javadoc" />
+    <property name="libs.javaee-web-api-7.0.maven-pom" value="" />
+    <property name="libs.restlib.src" value="" />
+    <property name="build.generated.dir" value="build/generated" />
+    <property name="javac.source" value="1.8" />
+    <property name="java.version.date" value="2023-01-17" />
+    <property name="line.separator" value="&#xd;&#xa;" />
+    <property name="libs.javaee-api-8.0.classpath" value="C:\Program Files\NetBeans-22\netbeans\enterprise\modules\ext\javaee-api-8.0.jar" />
+    <property name="java.specification.version" value="1.8" />
+    <property name="ant.file.type.az-java-el-impl" value="file" />
+    <property name="libs.jaxws21.maven-pom" value="" />
+    <property name="java.vm.info" value="mixed mode" />
+    <property name="nb.junit.batch" value="true" />
+    <property name="junit.forkmode" value="perTest" />
+    <property name="user.country.format" value="CN" />
+    <property name="platform.java.tmp" value="${platforms.JDK_1.8.java}" />
+    <property name="sun.boot.class.path" value="C:\Program Files\Java\jdk1.8.0_271\jre\lib\resources.jar;C:\Program Files\Java\jdk1.8.0_271\jre\lib\rt.jar;C:\Program Files\Java\jdk1.8.0_271\jre\lib\sunrsasign.jar;C:\Program Files\Java\jdk1.8.0_271\jre\lib\jsse.jar;C:\Program Files\Java\jdk1.8.0_271\jre\lib\jce.jar;C:\Program Files\Java\jdk1.8.0_271\jre\lib\charsets.jar;C:\Program Files\Java\jdk1.8.0_271\jre\lib\jfr.jar;C:\Program Files\Java\jdk1.8.0_271\jre\classes" />
+    <property name="javac.target" value="1.8" />
+    <property name="built-jar.properties" value="C:\PJ\PJ_AZ_java_lib\az-java-el\build\built-jar.properties" />
+    <property name="build.test.classes.dir" value="build/test/classes" />
+    <property name="src.dir" value="src" />
+    <property name="javac.test.compilerargs" value="" />
+    <property name="sun.awt.keepWorkingSetOnMinimize" value="true" />
+    <property name="annotation.processing.enabled" value="true" />
+    <property name="polyglot.engine.WarnInterpreterOnly" value="false" />
+    <property name="libs.jsf20.src" value="" />
+    <property name="libs.jpa20-persistence.src" value="" />
+    <property name="ignore.failing.tests" value="true" />
+    <property name="libs.javaee-web-api-7.0.src" value="" />
+    <property name="libs.primefaces.src" value="" />
+    <property name="libs.jakartaee-api-11.0.src" value="" />
+    <property name="dist.dir" value="dist" />
+    <property name="libs.groovy-all.javadoc" value="" />
+    <property name="jlink.launcher" value="true" />
+    <property name="testng.debug.mode" value="" />
+    <property name="jlink.additionalparam" value="" />
+    <property name="libs.groovy-all.classpath" value="C:\Program Files\NetBeans-22\netbeans\groovy\modules\ext\groovy-3.0.8.jar;C:\Program Files\NetBeans-22\netbeans\groovy\modules\ext\groovy-ant-3.0.8.jar" />
+    <property name="java.awt.printerjob" value="sun.awt.windows.WPrinterJob" />
+    <property name="default.javac.source" value="19" />
+    <property name="debug-transport-by-os" value="dt_shmem" />
+    <property name="sun.jnu.encoding" value="GBK" />
+    <property name="run.test.jvmargs" value="" />
+    <property name="java.runtime.version" value="1.8.0_271-b09" />
+    <property name="build.test.results.dir" value="build/test/results" />
+    <property name="libs.jakartaee-api-10.0.javadoc" value="C:\Program Files\NetBeans-22\netbeans\enterprise\docs\jakartaee10-doc-api.jar" />
+    <property name="default.javac.target" value="19" />
+    <property name="libs.junit_4.classpath" value="C:\Program Files\NetBeans-22\netbeans\platform\modules\ext\junit-4.13.2.jar" />
+    <property name="user.timezone" value="" />
+    <property name="flatlaf.nativeLibraryPath" value="system" />
+    <property name="nb.junit.single" value="false" />
+    <property name="libs.jakartaee-web-api-10.0.src" value="" />
+    <property name="libs.javaee-endorsed-api-6.0.maven-pom" value="" />
+    <property name="netbeans.dirs" value="C:\Program Files\NetBeans-22\netbeans\nb;C:\Program Files\NetBeans-22\netbeans\ergonomics;C:\Program Files\NetBeans-22\netbeans\ide;C:\Program Files\NetBeans-22\netbeans\extide;C:\Program Files\NetBeans-22\netbeans\java;C:\Program Files\NetBeans-22\netbeans\apisupport;C:\Program Files\NetBeans-22\netbeans\webcommon;C:\Program Files\NetBeans-22\netbeans\websvccommon;C:\Program Files\NetBeans-22\netbeans\enterprise;C:\Program Files\NetBeans-22\netbeans\mobility;C:\Program Files\NetBeans-22\netbeans\profiler;C:\Program Files\NetBeans-22\netbeans\python;C:\Program Files\NetBeans-22\netbeans\php;C:\Program Files\NetBeans-22\netbeans\identity;C:\Program Files\NetBeans-22\netbeans\harness;C:\Program Files\NetBeans-22\netbeans\cnd;C:\Program Files\NetBeans-22\netbeans\cndext;C:\Program Files\NetBeans-22\netbeans\cpplite;C:\Program Files\NetBeans-22\netbeans\dlight;C:\Program Files\NetBeans-22\netbeans\groovy;C:\Program Files\NetBeans-22\netbeans\extra;C:\Program Files\NetBeans-22\netbeans\javacard;C:\Program Files\NetBeans-22\netbeans\javafx;C:\Program Files\NetBeans-22\netbeans\rust" />
+    <property name="libs.spring-framework500.maven-pom" value="" />
+    <property name="libs.jstl.javadoc" value="C:\Program Files\NetBeans-22\netbeans\enterprise\docs\javaee-doc-api.jar" />
+    <property name="libs.jsf20.javadoc" value="C:\Program Files\NetBeans-22\netbeans\enterprise\docs\javaee-doc-api.jar" />
+    <property name="java.ext.dirs" value="C:\Program Files\Java\jdk1.8.0_271\jre\lib\ext;C:\WINDOWS\Sun\Java\lib\ext" />
+    <property name="libs.metro.src" value="" />
+    <property name="libs.absolutelayout.classpath" value="C:\Program Files\NetBeans-22\netbeans\java\modules\ext\AbsoluteLayout.jar" />
+    <property name="excludes" value="" />
+    <property name="libs.restlib.maven-pom" value="" />
+    <property name="libs.metro.classpath" value="C:\Program Files\NetBeans-22\netbeans\ide\modules\ext\jaxb\activation.jar;C:\Program Files\NetBeans-22\netbeans\enterprise\modules\ext\metro\webservices-api.jar;C:\Program Files\NetBeans-22\netbeans\enterprise\modules\ext\metro\webservices-extra-api.jar;C:\Program Files\NetBeans-22\netbeans\enterprise\modules\ext\metro\webservices-extra.jar;C:\Program Files\NetBeans-22\netbeans\enterprise\modules\ext\metro\webservices-rt.jar;C:\Program Files\NetBeans-22\netbeans\enterprise\modules\ext\metro\webservices-tools.jar" />
+    <property name="java.class.path" value="C:\PJ\PJ_AZ_java_lib\az-java-el\build\classes;C:\Program Files\NetBeans-22\netbeans\platform\modules\ext\junit-4.13.2.jar;C:\Program Files\NetBeans-22\netbeans\platform\modules\ext\hamcrest-core-1.3.jar;C:\PJ\PJ_AZ_java_lib\az-java-el\build\test\classes;C:\Program Files\NetBeans-22\netbeans\extide\ant\lib\ant-launcher.jar;C:\Program Files\NetBeans-22\netbeans\extide\ant\lib\ant.jar;C:\Program Files\NetBeans-22\netbeans\extide\ant\lib\ant-junit.jar;C:\Program Files\NetBeans-22\netbeans\extide\ant\lib\ant-junit4.jar" />
+    <property name="apple.laf.useScreenMenuBar" value="true" />
+    <property name="libs.absolutelayout.src" value="" />
+    <property name="libs.jpa20-persistence.classpath" value="C:\Program Files\NetBeans-22\netbeans\java\modules\ext\eclipselink\jakarta.persistence-2.2.3.jar" />
+    <property name="libs.jakartaee-api-9.0.maven-pom" value="" />
+    <property name="libs.junit_5.javadoc" value="C:\Program Files\NetBeans-22\netbeans\platform\docs\junit-jupiter-api-5.10.2-javadoc.jar;C:\Program Files\NetBeans-22\netbeans\platform\docs\junit-jupiter-params-5.10.2-javadoc.jar;C:\Program Files\NetBeans-22\netbeans\platform\docs\junit-jupiter-engine-5.10.2-javadoc.jar" />
+    <property name="libs.spring-framework500.src" value="" />
+    <property name="os.version" value="10.0" />
+    <property name="application.args" value="" />
+    <property name="libs.jakartaee-api-8.0.javadoc" value="C:\Program Files\NetBeans-22\netbeans\enterprise\docs\jakartaee8-doc-api.jar" />
+    <property name="libs.javaee-api-7.0.maven-pom" value="" />
+    <property name="sun.awt.enableExtraMouseButtons" value="true" />
+    <property name="sun.desktop" value="windows" />
+    <property name="jlink.launcher.name" value="az-java-el" />
+    <property name="stdout.encoding" value="UTF-8" />
+    <property name="libs.restlib.javadoc" value="" />
+    <property name="run.test.modulepath" value="" />
+    <property name="nb.internal.action.name" value="test" />
+    <property name="libs.JAXB-ENDORSED.classpath" value="C:\Program Files\NetBeans-22\netbeans\ide\modules\ext\jaxb\api\jaxb-api.jar" />
+    <property name="libs.eclipselink.classpath" value="C:\Program Files\NetBeans-22\netbeans\java\modules\ext\eclipselink\org.eclipse.persistence.core-2.7.12.jar;C:\Program Files\NetBeans-22\netbeans\java\modules\ext\eclipselink\org.eclipse.persistence.asm-9.4.0.jar;C:\Program Files\NetBeans-22\netbeans\java\modules\ext\eclipselink\org.eclipse.persistence.antlr-2.7.12.jar;C:\Program Files\NetBeans-22\netbeans\java\modules\ext\eclipselink\org.eclipse.persistence.jpa-2.7.12.jar;C:\Program Files\NetBeans-22\netbeans\java\modules\ext\eclipselink\org.eclipse.persistence.jpa.jpql-2.7.12.jar;C:\Program Files\NetBeans-22\netbeans\java\modules\ext\eclipselink\org.eclipse.persistence.moxy-2.7.12.jar;C:\Program Files\NetBeans-22\netbeans\java\modules\ext\eclipselink\jakarta.persistence-2.2.3.jar" />
+    <property name="libs.javaee-api-7.0.javadoc" value="C:\Program Files\NetBeans-22\netbeans\enterprise\docs\javaee-doc-api.jar" />
+    <property name="java.awt.graphicsenv" value="sun.awt.Win32GraphicsEnvironment" />
+    <property name="java.vm.vendor" value="Oracle Corporation" />
+    <property name="libs.CopyLibs.classpath" value="C:\Program Files\NetBeans-22\netbeans\java\ant\extra\org-netbeans-modules-java-j2seproject-copylibstask.jar" />
+    <property name="libs.jakartaee-web-api-10.0.classpath" value="C:\Program Files\NetBeans-22\netbeans\enterprise\modules\ext\jakarta.jakartaee-web-api-10.0.0.jar" />
+    <property name="libs.javaee-api-8.0.src" value="" />
+    <property name="libs.jsp-compiler.maven-pom" value="" />
+    <property name="libs.junit_5.maven-pom" value="" />
+    <property name="libs.hamcrest.src" value="" />
+    <property name="run.jvmargs" value="" />
+    <property name="dist.archive.excludes" value="" />
+    <property name="libs.JAXB-ENDORSED.src" value="" />
+    <property name="libs.testng.javadoc" value="C:\Program Files\NetBeans-22\netbeans\platform\docs\testng-6.13.1-javadoc.jar" />
+    <property name="platforms.JDK_1.8.home" value="C:\Program Files\Java\jdk1.8.0_271" />
+    <property name="user.script" value="" />
+    <property name="libs.PostgreSQLDriver.classpath" value="C:\Program Files\NetBeans-22\netbeans\ide\modules\ext\postgresql-42.5.4.jar" />
+    <property name="native.encoding" value="UTF-8" />
+    <property name="annotation.processing.source.output" value="build/generated-sources/ap-source-output" />
+    <property name="build.dir" value="build" />
+    <property name="libs.CopyLibs.src" value="" />
+    <property name="libs.jsp-compilation.classpath" value="C:\Program Files\NetBeans-22\netbeans\extide\ant\lib\ant.jar;C:\Program Files\NetBeans-22\netbeans\enterprise\modules\ext\servlet4.0-jsp2.3-api.jar;C:\Program Files\NetBeans-22\netbeans\enterprise\modules\ext\glassfish-jspparser-5.1.0.jar;C:\Program Files\NetBeans-22\netbeans\enterprise\modules\ext\jsf-2_2\javax.faces.jar;C:\Program Files\NetBeans-22\netbeans\enterprise\modules\ext\jstl-api.jar;C:\Program Files\NetBeans-22\netbeans\extide\ant\lib\ant-launcher.jar" />
+    <property name="debug.modulepath" value="" />
+    <property name="libs.javaee-web-api-8.0.javadoc" value="C:\Program Files\NetBeans-22\netbeans\enterprise\docs\javaee-doc-api.jar" />
+    <property name="ant.version" value="Apache Ant(TM) version 1.10.14 compiled on August 16 2023" />
+    <property name="libs.jakartaee-api-11.0.maven-pom" value="" />
+    <property name="build.classes.excludes" value="**/*.java,**/*.form" />
+    <property name="file.encoding" value="GBK" />
+    <property name="javadoc.nonavbar" value="false" />
+    <property name="platform.active" value="JDK_1.8" />
+    <property name="libs.javaee-web-api-8.0.maven-pom" value="" />
+    <property name="awt.toolkit" value="sun.awt.windows.WToolkit" />
+    <property name="libs.javaee-web-api-7.0.javadoc" value="C:\Program Files\NetBeans-22\netbeans\enterprise\docs\javaee-doc-api.jar" />
+  </properties>
+  <testcase classname="az.el.JavaEL_Test" name="test_00" time="0.019" />
+  <testcase classname="az.el.JavaEL_Test" name="test_01" time="0.001" />
+  <testcase classname="az.el.JavaEL_Test" name="test_02" time="0.0" />
+  <testcase classname="az.el.JavaEL_Test" name="test_03" time="0.0" />
+  <testcase classname="az.el.JavaEL_Test" name="test_04" time="0.0" />
+  <testcase classname="az.el.JavaEL_Test" name="test_05" time="0.003" />
+  <testcase classname="az.el.JavaEL_Test" name="test_06" time="0.002" />
+  <testcase classname="az.el.JavaEL_Test" name="test_0a" time="0.001" />
+  <testcase classname="az.el.JavaEL_Test" name="test_0b" time="0.0" />
+  <testcase classname="az.el.JavaEL_Test" name="test_0c" time="0.0" />
+  <testcase classname="az.el.JavaEL_Test" name="test_0d" time="0.0" />
+  <testcase classname="az.el.JavaEL_Test" name="test_0e" time="0.0" />
+  <testcase classname="az.el.JavaEL_Test" name="test_0f" time="0.001" />
+  <testcase classname="az.el.JavaEL_Test" name="test_0g" time="0.0" />
+  <testcase classname="az.el.JavaEL_Test" name="test_0h" time="0.001" />
+  <testcase classname="az.el.JavaEL_Test" name="test_0i" time="0.001" />
+  <testcase classname="az.el.JavaEL_Test" name="test_0d_0" time="0.001" />
+  <testcase classname="az.el.JavaEL_Test" name="test_0d_2" time="0.0" />
+  <testcase classname="az.el.JavaEL_Test" name="test_0d_3" time="0.0" />
+  <system-out><![CDATA[a
+b
+c
+this-line-from-el
+1
+iLoveYou
+C:\Users\arren
+start test...
+lord
+LucyReading
+a@jacky
+china
+yes
+my
+lord
+a
+jacky
+hello
+china
+3
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
