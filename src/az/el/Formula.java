@@ -3,6 +3,7 @@ package az.el;
 import java.io.IOException;
 import java.lang.reflect.Array;
 import java.lang.reflect.Constructor;
+import java.lang.reflect.Executable;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
@@ -105,13 +106,13 @@ final class Formula
             resolved = op.calculator.calculate( left.process(context), right.process(context) );
             evaluate( left.expr, true, resolved, context);
             break;
-            
+
         case SET: /* set variable value, set field value */
             evaluate( left.expr, true, resolved = right.process(context), context );
             break;
             
         default: /* a simple value, or a field get, a method invoking */
-            resolved = expr==null || expr.isEmpty() ? EL.NULL : evaluate( expr, false, null, context );
+            resolved = expr==null || expr.isEmpty() ? EL.VOID : evaluate( expr, false, null, context );
             break;
         }
         return resolved;
@@ -119,7 +120,7 @@ final class Formula
     
     private Object evaluate(String el, boolean set_get, Object param, final Map<String,Object> context)
     {
-        Object o;        
+        Object o;
         if( null!=(o=checkAndUseSimpleExpression(el))){
             return o;
         }
@@ -128,15 +129,16 @@ final class Formula
             int i = 0;
             boolean m = el.charAt(el.length()-1)==')' && (i=el.indexOf('('))>0; /* like : a.b.c.func(1,2) or a.b.c.field */
             String v, 
-                dots[] = (m ? el.substring(0,i) : el).split("\\."),
-                args[] = !m ? null : (v=el.substring(i+1,el.length()-1).trim()).isEmpty() ? null : v.split("[,]");
+                    dots[] = (m ? el.substring(0,i) : el).split("\\."),
+                    args[] = !m ? null : (v=el.substring(i+1,el.length()-1).trim()).isEmpty() ? null : v.split("[,]");
             Object[] objs = purify_args(args,context);
         return
-            m && dots.length==1 ? parse_internal_functions(dots[0],objs)
+            m && dots.length==1 
+            ? parse_internal_functions(dots[0],objs,context)
             : evaluate( m,
-                dots, /* elements/dots, like : a.b.c.func or a.b.c.field */
-                objs, /* args, like : [1,2] ; or null for non-method */
-                set_get, param, context );
+                    dots, /* elements/dots, like : a.b.c.func or a.b.c.field */
+                    objs, /* args, like : [1,2] ; or null for non-method */
+                    set_get, param, context );
         }
         catch(ReflectiveOperationException|IOException|ParseException|RuntimeException ex){
             throw new IllegalArgumentException( toString(),ex );
@@ -202,7 +204,8 @@ final class Formula
         return objs;
     }
     
-    private static Object parse_internal_functions(String func, Object[] args)
+    private static Object parse_internal_functions(String func, Object[] args, final Map<String,Object> context) 
+            throws ReflectiveOperationException, IOException, ParseException
     {
         switch(func.toLowerCase()){
         case "array":
@@ -211,6 +214,12 @@ final class Formula
             return Arrays.asList(args);
         case "map":
             return newHashMap(args);
+        case "each":
+        case "every":
+        case "foreach":
+            return EL.each(args[0], args[1].toString(), args.length>2 ? (Map<String,Object>)args[2] : context);
+        case "iif":
+            return EL.iif(args[0], args[1], args[2], args.length>3 ? (Map<String,Object>)args[3] : context);
         default:
             throw new IllegalArgumentException("InvalidInternalMethod_"+func);
         }
@@ -337,11 +346,14 @@ final class Formula
             end[0] = dots.length-offset;
             nm = Help.fullClassName(dots,0,end);
             
+    // we don't use a class if it is in the black-list !
+    //
             if( blacklist!=null && (
                 blacklist.contains(nm) || blacklist.contains(nm.substring(0,nm.lastIndexOf('.')+1)+"*")) )
             {
                 throw new java.lang.SecurityException("ClassInBlacklist_"+nm);
             }
+    // then we load the class, and use it as we expected.
             try{
                 c = Class.forName( nm );
             }
@@ -441,7 +453,7 @@ final class Formula
             void_return, context )
             ; 
         return 
-            void_return.value ? EL.NULL : o;
+            void_return.value ? EL.VOID : o;
     }
         
     
@@ -486,97 +498,87 @@ final class Formula
     
         if( PATTERN_NEW_CTOR.matcher(exact[0]).matches() )
         {
-        final Constructor<?> method = el_search_constructor(clz, name, types, args_count, exact, cache);
+            final Constructor<?> method = el_search_constructor(clz, name, types, args_count, exact, cache);
         
-            return Objects.requireNonNull(method,"NoMatchedConstructor").newInstance( 
+            return Objects.requireNonNull(method,"NoMatchedConstructor")
+                .newInstance(
                         method.getParameterCount()>0
                             ? params.apply(method.getParameterTypes(), new Object[method.getParameterCount()])
-                            : null ); 
+                            : null
+                ); 
         }
         else
         {
-        final Method method = el_search_method(clz, name, types, args_count, exact, void_return, cache);
+            final Method method = el_search_method(clz, name, types, args_count, exact, void_return, cache);
         
-            return Objects.requireNonNull(method,"NoMatchedMethod").invoke( 
+            return Objects.requireNonNull(method,"NoMatchedMethod")
+                .invoke( 
                         0<(method.getModifiers() & Modifier.STATIC) ? null : ref,
                         method.getParameterCount()>0
                             ? params.apply(method.getParameterTypes(), new Object[method.getParameterCount()])
-                            : null ); 
+                            : null
+                ); 
         }
     }
     
     private static Constructor<?> el_search_constructor(Class<?> clz, String name, final String[] types, 
-            final int args_count, final String[] exact, 
-            final Map<String,Object> cache ) throws ReflectiveOperationException
+        final int args_count, final String[] exact, 
+        final Map<String,Object> cache ) throws ReflectiveOperationException
     {
         String label = clz.getName()+"."+name;
         Constructor<?> method = Constructor.class.cast(cache.get(label));
         
-        if( method==null )
-        {
-            final Constructor<?>[] list = clz.getConstructors();
-            final int[] matched = {0,0,0}; int i = 0, n = 0;
-            
-            for(Constructor<?> m : list )
-            {
-                if((list.length<2 && exact.length<2) /* !!! the only method ? use it */
-                || (m.getParameterCount()==args_count && el_search_method_match(m.getParameters(),types)) )
-                {
-                    method = m; method.setAccessible( true ); break;
-                }
-                else if( m.getParameterCount()==types.length ){
-                    matched[n++ % matched.length] = i;
-                }
-                i++;
-            }
-            if( method==null && n==1 ){
-                method = list[matched[(n-1) % matched.length]];
-                method.setAccessible( true );
-            }
-            if( method!=null && (n==1 || exact.length>1) ){
-                cache.put( label, method );
-            }
+        if( method==null ){
+            method = (Constructor)el_search_method_in_list(types,args_count,exact,clz.getConstructors(),label,cache);
         }    
         return method;
     }
     private static Method el_search_method(Class<?> clz, String name, final String[] types, 
-            final int args_count, final String[] exact, 
-            final RefBoolean void_return,
-            final Map<String,Object> cache ) throws ReflectiveOperationException
+        final int args_count, final String[] exact, final RefBoolean void_return,
+        final Map<String,Object> cache ) throws ReflectiveOperationException
     {
         String label = clz.getName()+"."+name;
         Method method = Method.class.cast(cache.get(label));
         
-        if( method==null )
-        {
+        if( method==null ){
             final String mName = exact[0];
             final Method[] list = Arrays.stream(clz.getMethods())
                     .filter(m->mName.equals(m.getName()))
                     .toArray( Method[]::new );
-            final int[] matched = {0,0,0}; int i = 0, n = 0;
-
-            for(Method m : list )
-            {
-                if((list.length<2 && exact.length<2)
-                || (m.getParameterCount()>=args_count && el_search_method_match(m.getParameters(),types)) )
-                {                          
-                    method = m; method.setAccessible( true ); break;
-                }
-                else if( m.getParameterCount()==types.length ){
-                    matched[n++ % matched.length] = i;
-                }
-                i++;
-            }
-            if( method==null && n==1 ){
-                method = list[matched[(n-1) % matched.length]];
-                method.setAccessible( true );
-            }
-            if( method!=null && (n==1 || exact.length>1) ){
-                cache.put( label, method );
-            }
+            method = (Method)el_search_method_in_list(types,args_count,exact,list,label,cache);
         }
         void_return.value
-            = "void".equalsIgnoreCase(Objects.requireNonNull(method,"NoMethod_"+name).getReturnType().getTypeName());        
+            = "void".equalsIgnoreCase(Objects.requireNonNull(method,"NoMethod_"+name).getReturnType().getTypeName());
+        return method;
+    }
+    
+    
+    private static Executable el_search_method_in_list( final String[] types, 
+        final int args_count, final String[] exact, Executable[] list, String label,
+        final Map<String,Object> cache ) throws ReflectiveOperationException
+    {
+        Executable method = null;
+        final int[] matched = {0,0,0}; int i = 0, n = 0;
+
+        for(Executable m : list )
+        {
+            if((list.length<2 && exact.length<2)
+            || (m.getParameterCount()>=args_count && el_search_method_match(m.getParameters(),types)) )
+            {                          
+                method = m; method.setAccessible( true ); break;
+            }
+            else if( m.getParameterCount()==types.length ){
+                matched[n++ % matched.length] = i;
+            }
+            i++;
+        }
+        if( method==null && n==1 ){
+            method = list[matched[(n-1) % matched.length]];
+            method.setAccessible( true );
+        }
+        if( method!=null && (n==1 || exact.length>1) ){
+            cache.put( label, method );
+        }
         return method;
     }
     
@@ -591,8 +593,8 @@ final class Formula
     
     
     
-    public static Formula newFormula(int depth, StringBuilder el, int offset, int to,
-            int ops, Scanner.Job[] oplist, int from, int end, Scanner.Job[] queue)
+    public static Formula complexFormula(int depth, StringBuilder el, int offset, int to,
+        int ops, Scanner.Job[] oplist, int from, int end, Scanner.Job[] queue)
     {
         final int count = end-from;
         System.arraycopy( oplist, from, queue, 0, count );
@@ -605,12 +607,12 @@ final class Formula
             /* left formula */
             array_index<from+1
                     ? new Formula(depth+1, el.substring(array_index>0 ? oplist[array_index-1].end : offset, job.position))
-                    : newFormula(depth+1, el,offset,to,ops,oplist,from,array_index,queue) 
+                    : complexFormula(depth+1, el,offset,to,ops,oplist,from,array_index,queue) 
             ,
             /* right formula */
             array_index>end-2
                     ? new Formula(depth+1, el.substring(job.end, array_index<ops-1 ? oplist[array_index+1].position : to))
-                    : newFormula(depth+1, el,offset,to,ops,oplist,array_index+1,end,queue) 
+                    : complexFormula(depth+1, el,offset,to,ops,oplist,array_index+1,end,queue) 
             );
         return formula;
     }
@@ -623,7 +625,7 @@ final class Formula
                 /* a function-calling ? like : Math.min(1,2) */
             ? new Formula( 0, el.substring(offset,to) ).process( context )
                 /* a much more complex sentence, need to be parsed and processed */
-            : newFormula( 0, el, offset, to, ops, oplist, 0, ops, queue ).process( context );
+            : complexFormula( 0, el, offset, to, ops, oplist, 0, ops, queue ).process( context );
     }
     
 }

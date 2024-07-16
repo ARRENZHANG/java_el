@@ -18,7 +18,7 @@ enum OP
     
     @SuppressWarnings("unchecked")
     EQ(20,"==",
-        (a,b)->Comparable.class.cast(a).compareTo(Comparable.class.cast(b))==0),
+        (a,b)->a==b || Comparable.class.cast(a).compareTo(Comparable.class.cast(b))==0),
     @SuppressWarnings("unchecked")
     NEQ(20,"!=",
         (a,b)->Comparable.class.cast(a).compareTo(Comparable.class.cast(b))!=0),

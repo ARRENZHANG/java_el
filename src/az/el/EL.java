@@ -53,7 +53,9 @@ public class EL
     public static final String VAR_NAME_CLASS_BLACKLIST = "$class_blacklist";
     
     
-    static final Object NULL = new Object();
+    public static final Object NULL = new Object();
+    public static final Object VOID = new Object();
+    
     static final Pattern PATTERN_LINE_SPLITER = Pattern.compile("[\n;]");
     
     
@@ -197,7 +199,7 @@ public class EL
             builder.setLength( 0 );
             builder.append( item );
             
-            if( NULL!=(o=Scanner.scan(context,depth,builder,brackets,commas,ops,jobs,funcs)) )
+            if( VOID!=(o=Scanner.scan(context,depth,builder,brackets,commas,ops,jobs,funcs)) )
             {
                 result = o;
                 context.put( "?", o );
@@ -226,10 +228,27 @@ public class EL
      * @param condition true or false.
      * @param if_true be returned if condition is true.
      * @param or_else be returned when condition is false.
+     * @param context
      * @return the result.
+     * @throws java.lang.ReflectiveOperationException
+     * @throws java.io.IOException
+     * @throws java.text.ParseException
      */
-    public static Object iif(boolean condition, Object if_true, Object or_else){
-        if( condition ) return if_true; else return or_else;
+    public static Object iif(Object condition, Object if_true, Object or_else, Map<String,Object> context)
+        throws ReflectiveOperationException, IOException, ParseException
+    {
+        boolean yes = condition==null 
+                ? false
+                :!Routine.class.isInstance(condition)
+                ? Boolean.parseBoolean(condition.toString())
+                : Boolean.parseBoolean(Routine.class.cast(condition).run(context).toString())
+                ;
+        if( yes ){
+            return if_true instanceof Routine ? Routine.class.cast(if_true).run(context) : if_true;
+        }
+        else{
+            return or_else instanceof Routine ? Routine.class.cast(or_else).run(context) : or_else;
+        }
     }
     
     public static Object each(Object items, String exp, Map<String,Object> context) 
@@ -258,11 +277,11 @@ public class EL
     private static Object forEach_iterator(Map<String,Object> context, Iterator<?> iter, ExpressionArrayReader reader) 
         throws ReflectiveOperationException, IOException, ParseException
     {        
-        Object result = null;
+        Object result = null, o;
         
         while( iter.hasNext() ){
             context.put("$", iter.next()); 
-            result = EL.eval( context, 1, reader.reset() );
+            if( NULL!=(o=EL.eval(context, 1, reader.reset())) ) result = o; else break;
         }
         context.remove( "$" );
         return result;
@@ -288,4 +307,23 @@ public class EL
     }
     /* end : class ArrayIterator */
     
+    /***
+     * make it possible to delay the evaluation of an expression,
+     * especially for "iif()" method.
+     */
+    static class Routine
+    {
+        final String exp;
+        
+        public Routine(String exp){
+            this.exp = exp;
+        }
+        public Object run(Map<String,Object> context) 
+            throws ReflectiveOperationException, IOException, ParseException
+        {
+            ExpressionArrayReader processor = new ExpressionArrayReader(exp);
+            return eval(context,2,processor.reset());
+        }
+    }
+    /* end : class Routine */
 }

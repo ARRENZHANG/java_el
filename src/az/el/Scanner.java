@@ -30,6 +30,26 @@ final class Scanner
         return "$"+Integer.toString(index+depth*EL.MAX_VARS_IN_DEPTH);
     }
     
+    private static Object eval(StringBuilder expr, int offset, int to,
+            int job_ops, Scanner.Job[] job_oplist, Scanner.Job[] job_queue, final Map<String,Object> context,
+            int stack, int[] brackets, int[] commas, int[] ops, Job[][] oplist, int[] funcs )
+        throws ReflectiveOperationException, IOException, ParseException
+    {
+        if( stack>0 && brackets[stack]>0 && funcs[stack]>0 && token_match(expr,"iif(", stack-1,brackets,commas,ops,oplist)){
+            return new EL.Routine(expr.substring(offset,to));
+        }     
+        else{
+            return Formula.calculate(expr, offset, to, job_ops, job_oplist, job_queue, context );
+        }
+    }
+    private static boolean token_match(StringBuilder expr, String token, 
+            int stack, int[] brackets, int[] commas, int[] ops, Job[][] oplist)
+    {
+        int m = ops[stack]>0 ? oplist[stack][ops[stack]-1].end : commas[stack]>0 ? commas[stack]+1 : brackets[stack]>0?brackets[stack]+1 : 0;
+        int n = token.length(), i = 0;
+            while(i+m<expr.length() && i<n && expr.charAt(i+m)==token.charAt(i)) i++;
+        return i==n;
+    }
  
     public static Object scan(final Map<String,Object> context, int depth,
         StringBuilder expr,
@@ -41,7 +61,7 @@ final class Scanner
         int modified = 0;
         int i, m, x, vari = 0, stack = 0; brackets[0] = 0; commas[0] = 0; ops[0] = 0; funcs[0] = 0;
         
-        String varn; boolean b;
+        String varn; boolean b; Object o;
         
         for(i=0; i<expr.length(); i++)
         {
@@ -229,10 +249,14 @@ final class Scanner
                   * we detcted some operations ? like : 2*Math.min(x*3,2*i) 
                   ****/
                     m = commas[stack]>0 ? commas[stack]+1 : brackets[stack]+1;
+                if( EL.VOID!=(o=eval(expr, m, i, ops[stack], oplist[stack], oplist[oplist.length-1], context,
+                        stack,brackets,commas,ops,oplist,funcs)))
+                {
                     varn = vName( vari++, depth );
-                    context.put( varn, Formula.calculate(expr, m, i, ops[stack], oplist[stack], oplist[oplist.length-1], context) );
+                    context.put( varn, o );
                     setPartialString( expr, m, i, varn );
                     modified++;
+                    }
                 }
                 commas[stack] = i; ops[stack] = 0; funcs[stack] = 0;
                 break;
@@ -243,10 +267,14 @@ final class Scanner
                   * like "Math.min(Math.max(5,i*2)*4,3*Math.max(1+2,3+4))", here we calculate "i*2" and "3+4" .
                   ****/ 
                     m = commas[stack]>0 ? commas[stack]+1 : brackets[stack]+1;
+                if( EL.VOID!=(o=eval(expr, m, i, ops[stack], oplist[stack], oplist[oplist.length-1], context,
+                        stack,brackets,commas,ops,oplist,funcs)))
+                {
                     varn = vName( vari++, depth );
-                    context.put( varn, Formula.calculate(expr, m, i, ops[stack], oplist[stack], oplist[oplist.length-1], context) );
+                    context.put( varn, o );
                     setPartialString( expr, m, i, varn );
                     modified++;
+                    }
                 }
                 stack--; funcs[stack] += 1; /* a method was found ? */
                 break;
@@ -257,10 +285,15 @@ final class Scanner
                   * like : Runtime.getRuntime().availableProcessor()
                   ****/
                     m = ops[stack]>0 ? oplist[stack][ops[stack]-1].end : commas[stack]>0 ? commas[stack]+1 : brackets[stack]>0?brackets[stack]+1:0;
+                if( EL.VOID!=(o=eval(expr, m, i, 0, oplist[stack], oplist[oplist.length-1], context,
+                        stack,brackets,commas,ops,oplist,funcs)))
+                {
                     varn = vName( vari++, depth );
-                    context.put( varn, Formula.calculate(expr, m, i, 0, oplist[stack], oplist[oplist.length-1], context) );
+                    context.put( varn, o );
                     setPartialString( expr, m, i, varn );
-                    modified++; funcs[stack] = 0;
+                    modified++; 
+                    }
+                    funcs[stack] = 0;
                 }
                 break;
                 

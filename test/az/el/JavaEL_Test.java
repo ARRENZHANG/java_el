@@ -71,9 +71,14 @@ public class JavaEL_Test {
     {
         Integer a = EL.eval(""
                 + "i=1;"
-                + "az.el.EL.iif(?i>0,1+2,java.lang.Math.max#int(5,?));"
+                + "iif(?i>0,1+2,java.lang.Math.max#int(5,?));"
                 + "");
         Assert.assertTrue(Integer.compare(3,Integer.class.cast(a))==0);
+        Integer b = EL.eval(""
+                + "i=1;"
+                + "iif(?i>2,1+2,java.lang.Math.max#int(5,?));"
+                + "");
+        Assert.assertTrue(Integer.compare(5,Integer.class.cast(b))==0);
     }
     @Test
     public void test_0h() throws ReflectiveOperationException, IOException, ParseException
