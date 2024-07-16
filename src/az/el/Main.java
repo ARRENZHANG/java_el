@@ -12,9 +12,10 @@ import java.util.Arrays;
 
 final class Main
 {
+    private Main()
+    {}
 
-    public static Object entry(String[] args)
-        throws ReflectiveOperationException, IOException, ParseException
+    public static Object entry(String[] args) throws ReflectiveOperationException, IOException, ParseException
     {
         boolean use_args = false; String [] the_args = null;
         boolean use_file = false; String the_file = null;
@@ -56,21 +57,23 @@ final class Main
             if( the_file==null || !Files.exists(path=Paths.get(the_file)) || Files.size(path)<1 )
                 return null;
             try(BufferedReader reader = Files.newBufferedReader(path, StandardCharsets.UTF_8)){
-                return az.el.EL.eval(null, 0, new FileLinesReader(reader));
+                return az.el.EL.eval(null, 0, new ReaderReader(reader));
             }
         }
-        else{            
+        else /* read user input, and parse them */
+        {            
             try(BufferedReader reader = new BufferedReader(new InputStreamReader(System.in,StandardCharsets.UTF_8))){
-                return az.el.EL.eval(null, 0, new FileLinesReader(reader), true);
+                return az.el.EL.eval(null, 0, new ReaderReader(reader), true);
             }
         }
     }
+    
 
-    static class FileLinesReader implements az.el.EL.LineReader
+    static class ReaderReader implements az.el.EL.LineReader
     {
         final BufferedReader reader;
 
-        FileLinesReader(BufferedReader reader){
+        ReaderReader(BufferedReader reader){
             this.reader = reader;
         }
         @Override

@@ -628,7 +628,8 @@ final class Formula
             }
             if( m!=0 ) i++; else break;
         }
-        return i==types.length;
+        return
+            i==types.length;
     }
     
     
@@ -636,11 +637,17 @@ final class Formula
     public static Formula complexFormula(int depth, StringBuilder el, int offset, int to,
         int ops, Scanner.Job[] oplist, int from, int end, Scanner.Job[] queue)
     {
+        Scanner.Job job;
         final int count = end-from;
-        System.arraycopy( oplist, from, queue, 0, count );
-        Arrays.sort( queue, 0, count, Scanner.Job.comparator );
         
-        final Scanner.Job job = queue[0]; /* the job with lowest priority */
+        if( count>0 ){
+            System.arraycopy( oplist, from, queue, 0, count );
+            Arrays.sort( queue, 0, count, Scanner.Job.comparator );
+            job = queue[0]; /* the job with lowest priority */
+        }
+        else{
+            job = oplist[from];
+        }
         final int array_index = job.index;
         
         final Formula formula = new Formula( depth, job.op,
