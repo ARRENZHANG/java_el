@@ -3,10 +3,15 @@ a simple Java-Expression parser, related to Java Expression Language.
 Useful
 ----------------------------------
 1, provide you the possibility to configure your programs with Dynamic parameters,
-for example, a configure item like :
+for example, a configure file like :
 
+    some.a=1
     some.property=${Math.max(256,Runtime.getRuntime().availableProcessors()*8)}
-then :
+    some.b=2
+
+the properties can be distributed by a configure-center or a file,
+and can be used as :
+
     tomcat.setMaxThreads(EL.eval(config.get("some.property")));
 
 will make your tomcat service run with correct threads number.
@@ -26,7 +31,7 @@ boolean, int/integer, long, float, string.
 Special variables
 ----------------------------------
 ? : the result of previous expression, any type.
-$ : the current element when interating a collection.
+$ : the current element when iterating a collection.
 context : the execution context, which contains all variables.
 other user defined variables can be referenced by its name,
 use
@@ -40,18 +45,24 @@ Embedded Functions
 helps creating a Map object, like :
     EL.eval("m=map('a',1,'b',2)") 
 will create a map with two entries, of ["a"->1,"b"->2].
+
 2, list()
 will create a List object, like "list(1,'a',2,3)", a list with 4 items.
+
 3, array()
 create an array, like "array(1,2,3)".
+
 4, each(), every(), foreach()
-can be used to iterate a collection, like 
+can be used to iterate a collection, like:
     EL.eval("each(a_list,'System.out.println($)')"),
 will print each elements in console.
+
 5, iif()
-used to check conditions, like "x=iif(a>1, obj.doSomething(a), obj.doOther(a))",
+used to check conditions,
+like "x=iif(a>1, obj.doSomething(a), obj.doOther(a))",
 will give you the result for different conditions.
-6, print(), println(), printf();
+
+6, print(), println(), printf().
 
 
 Supported operators
