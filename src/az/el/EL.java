@@ -158,9 +158,15 @@ public class EL
     }
     /* end : class StringArrayReader */
     
+    public static <T> T eval( final Map<String,Object> eval_context, int depth, final LineReader reader)
+        throws ReflectiveOperationException, IOException, ParseException
+    {
+        return eval( eval_context, depth, reader, false );
+    }
+
     
     @SuppressWarnings("unchecked")
-    public static <T> T eval( final Map<String,Object> eval_context, int depth, final LineReader reader )
+    public static <T> T eval( final Map<String,Object> eval_context, int depth, final LineReader reader, boolean suppress_errors)
         throws ReflectiveOperationException, IOException, ParseException
     {
         Map<String,Object> context = eval_context!=null ? eval_context : new HashMap<>(reader.size()*4*4/3);
@@ -199,8 +205,17 @@ public class EL
             builder.setLength( 0 );
             builder.append( item );
             
-            if( VOID!=(o=Scanner.scan(context,depth,builder,brackets,commas,ops,jobs,funcs)) )
-            {
+            try{
+                o = Scanner.scan(context,depth,builder,brackets,commas,ops,jobs,funcs);
+            }
+            catch(ReflectiveOperationException|IOException|ParseException|RuntimeException ex){
+                if(!suppress_errors ) throw ex; else
+                {
+                    o = VOID;
+                    System.err.println(ex.getMessage());
+                }
+            }
+            if( VOID!=o ){
                 result = o;
                 context.put( "?", o );
             }
@@ -257,7 +272,7 @@ public class EL
         if( items==null )
             throw new java.lang.IllegalArgumentException("items");
         if( exp==null || exp.isEmpty() )
-            throw new java.lang.IllegalArgumentException("processor");
+            exp= items instanceof Map ? "System.out.println($.getKey()+'='+$.getValue())" : "System.out.println($)";
         
         Object result = null;
         ExpressionArrayReader processor = new ExpressionArrayReader(exp);
@@ -268,6 +283,8 @@ public class EL
             result = forEach_iterator( context, Iterator.class.cast(items), processor );
         else if( items.getClass().isArray() )
             result = forEach_iterator( context, new ArrayIterator(items), processor );
+        else if( items instanceof Map )
+            result = forEach_iterator( context, Map.class.cast(items).entrySet().iterator(), processor );
         else{
             throw new java.lang.IllegalArgumentException("NotArrayListObject_"+items.getClass());
         }
@@ -326,4 +343,17 @@ public class EL
         }
     }
     /* end : class Routine */
+
+
+
+    public static void main(String[] args){
+        try{
+            Main.entry( args );
+        }
+        catch(ReflectiveOperationException| IOException|ParseException|RuntimeException ex)
+        {
+            System.err.println("error :\n");
+            ex.printStackTrace( System.err );
+        }
+    }
 }

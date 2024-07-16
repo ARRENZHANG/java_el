@@ -63,7 +63,7 @@ final class Formula
         {
         case AND:
         case OR:
-        case NOT:
+        case NOT:              /* no left expression */
         case GT:
         case GTE:
         case LT:
@@ -75,7 +75,7 @@ final class Formula
         case BIT_AND:
         case BIT_OR:
         case BIT_XOR:
-        case BIT_NOT:
+        case BIT_NOT:          /* no left expression */
         case ADD:
         case MINUS:
         case MULTIPLY:
@@ -84,12 +84,12 @@ final class Formula
             resolved = op.calculator.calculate( left.process(context), right.process(context) );
             break;
             
-        case SELF_ADD_left: /* no left expression */
-        case SELF_MINUS_left: /* no left expression */
+        case SELF_ADD_left:    /* no left expression */
+        case SELF_MINUS_left:  /* no left expression */
             resolved = op.calculator.calculate( null, right.process(context) );
             evaluate( right.expr, true, resolved, context);
             break;
-        case SELF_ADD_right: /* no right expression */
+        case SELF_ADD_right:   /* no right expression */
         case SELF_MINUS_right: /* no right expression */
             o = op.calculator.calculate( resolved = left.process(context), null );
             evaluate( left.expr, true, o, context);
@@ -111,7 +111,7 @@ final class Formula
             evaluate( left.expr, true, resolved = right.process(context), context );
             break;
             
-        default: /* a simple value, or a field get, a method invoking */
+        default: /* a simple value-convert, or a field-reading or a method-calling */
             resolved = expr==null || expr.isEmpty() ? EL.VOID : evaluate( expr, false, null, context );
             break;
         }
@@ -215,14 +215,34 @@ final class Formula
             return Arrays.asList(args);
         case "map":
             return newHashMap(args);
+            
         case "each":
         case "every":
         case "foreach":
-            return EL.each(args[0], args[1].toString(), 
-                args.length>2 && Map.class.isInstance(args[2]) ? (Map<String,Object>)args[2] : context);
+            return EL.each
+            (
+                args[0]==context ? new HashMap<>(context) : args[0],
+                args.length>1 ? args[1].toString() : null,
+                args.length>2 && Map.class.isInstance(args[2]) ? (Map<String,Object>)args[2] : context
+            );
+            
         case "iif":
-            return EL.iif(args[0], args[1], args[2], 
-                args.length>3 && Map.class.isInstance(args[3]) ? (Map<String,Object>)args[3] : context);
+            return EL.iif
+            (
+                args[0], args[1], args[2], 
+                args.length>3 && Map.class.isInstance(args[3]) ? (Map<String,Object>)args[3] : context
+            );
+            
+        case "print":
+            System.out.print( args[0] );
+            return EL.VOID;
+        case "println":
+            System.out.println( args[0] );
+            return EL.VOID;
+        case "printf":
+            System.out.printf( args[0].toString(), args.length>1 ? Arrays.copyOfRange(args,1,args.length) : null );
+            return EL.VOID;
+            
         default:
             throw new IllegalArgumentException("InvalidInternalMethod_"+func);
         }
@@ -301,6 +321,9 @@ final class Formula
         {
         case "string":
             return obj==null ? null : obj.toString();
+        case "char":
+        case "character":
+            return (char)(0x0FFFF & Integer.parseInt(obj==null ? "0" : trim_number_dot(obj.toString())));
         case "byte":
             return Byte.valueOf(obj==null ? "0" : trim_number_dot(obj.toString()));
         case "short":
@@ -532,7 +555,7 @@ final class Formula
         Constructor<?> method = Constructor.class.cast(cache.get(label));
         
         if( method==null ){
-            method = (Constructor)el_search_method_in_list(types,args_count,exact,clz.getConstructors(),label,cache);
+            method = (Constructor<?>)el_search_method_in_list(types,args_count,exact,clz.getConstructors(),label,cache);
         }    
         return method;
     }
@@ -587,9 +610,23 @@ final class Formula
     
     private static boolean el_search_method_match(Parameter[] params, final String[] types){
         int i = 0;
-        for(;i<params.length && i<types.length;){
-            String cnm = params[i].getType().getName();
-            if( cnm.toLowerCase().endsWith(types[i])) i++; else break;
+        for(int m = 0;i<params.length && i<types.length;)
+        {
+        final String cnm = params[i].getType().getSimpleName().toLowerCase();
+        
+            switch( cnm )
+            {
+            case "int":
+                m += types[i].startsWith(cnm) ? 1 : 0;
+                break;  
+            case "integer":
+                m += cnm.startsWith(types[i]) ? 1 : 0;
+                break;
+            default:
+                m += cnm.equals(types[i]) ? 1 : 0;
+                break;
+            }
+            if( m!=0 ) i++; else break;
         }
         return i==types.length;
     }

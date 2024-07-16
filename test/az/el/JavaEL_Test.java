@@ -36,7 +36,9 @@ public class JavaEL_Test {
     @Test
     public void test_00() throws ReflectiveOperationException, IOException, ParseException
     {        
-        EL.eval("list=array('a','b','c');func='System.out.println#string($)';EL.each(list,func,context);");
+        EL.eval("a=1;b='2';each(context)");
+        EL.eval("list=array('a','b','c');func='System.out.println#string($)';each(list,func);");
+        EL.eval("list=array('a','b','c');each(list)");
         
         Object b = EL.eval(""
                 + "a=(1>2) || (3>2);"
@@ -57,6 +59,13 @@ public class JavaEL_Test {
                 + "");
         Assert.assertTrue(Integer.compare(3,Integer.class.cast(a))==0);
     }
+    @Test
+    public void test_0b_01() throws ReflectiveOperationException, IOException, ParseException
+    {        
+        EL.eval("System.out.println(Math.max(2*3+1,Runtime.getRuntime().availableProcessors()*2))");
+    }
+    
+    
     @Test
     public void test_0f() throws ReflectiveOperationException, IOException, ParseException
     {

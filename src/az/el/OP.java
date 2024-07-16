@@ -187,4 +187,7 @@ enum OP
         this.calculator = func;
     }
    
+    public String toString(){
+        return operator;
+    }
 }

@@ -72,7 +72,11 @@ final class Scanner
             case '+':
                 switch(expr.charAt(i+1)){
                 case '+':
-                    b = i==0 || commas[stack]==i-1 || brackets[stack]==i-1 || (ops[stack]>0 && oplist[stack][ops[stack]-1].end==i);
+                    b = i==0 
+                        || (commas[stack]>0 && commas[stack]==i-1)
+                        || (brackets[stack]>0 && brackets[stack]==i-1)
+                        || (ops[stack]>0 && oplist[stack][ops[stack]-1].end==i)
+                        ;
                     Job.set(oplist[stack], ops[stack]++, i, "++", b ? OP.SELF_ADD_left : OP.SELF_ADD_right );
                     i++;
                     break;
@@ -88,7 +92,11 @@ final class Scanner
             case '-':
                 switch(expr.charAt(i+1)){
                 case '-':
-                    b = i==0 || commas[stack]==i-1 || brackets[stack]==i-1 || (ops[stack]>0 && oplist[stack][ops[stack]-1].end==i);
+                    b = i==0 
+                        || (commas[stack]>0 && commas[stack]==i-1)
+                        || (brackets[stack]>0 && brackets[stack]==i-1)
+                        || (ops[stack]>0 && oplist[stack][ops[stack]-1].end==i)
+                        ;
                     Job.set(oplist[stack], ops[stack]++, i, "--", b ? OP.SELF_MINUS_left : OP.SELF_MINUS_right );
                     i++;
                     break;
@@ -316,7 +324,7 @@ final class Scanner
             }
         }
         if( stack!=0 )
-            throw new java.lang.IllegalArgumentException("InvalidJavaExpression");
+            throw new java.lang.IllegalArgumentException("InvalidJavaExpression_BracketLost");
         return
             Formula.calculate( expr, 0, i, ops[stack], oplist[stack], oplist[oplist.length-1], context );
     }
