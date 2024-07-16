@@ -204,6 +204,7 @@ final class Formula
         return objs;
     }
     
+    @SuppressWarnings("unchecked")
     private static Object parse_internal_functions(String func, Object[] args, final Map<String,Object> context) 
             throws ReflectiveOperationException, IOException, ParseException
     {
@@ -217,9 +218,11 @@ final class Formula
         case "each":
         case "every":
         case "foreach":
-            return EL.each(args[0], args[1].toString(), args.length>2 ? (Map<String,Object>)args[2] : context);
+            return EL.each(args[0], args[1].toString(), 
+                args.length>2 && Map.class.isInstance(args[2]) ? (Map<String,Object>)args[2] : context);
         case "iif":
-            return EL.iif(args[0], args[1], args[2], args.length>3 ? (Map<String,Object>)args[3] : context);
+            return EL.iif(args[0], args[1], args[2], 
+                args.length>3 && Map.class.isInstance(args[3]) ? (Map<String,Object>)args[3] : context);
         default:
             throw new IllegalArgumentException("InvalidInternalMethod_"+func);
         }
