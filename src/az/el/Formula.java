@@ -236,11 +236,14 @@ final class Formula
         case "print":
             System.out.print( args[0] );
             return EL.VOID;
-        case "println":
-            System.out.println( args[0] );
-            return EL.VOID;
         case "printf":
             System.out.printf( args[0].toString(), args.length>1 ? Arrays.copyOfRange(args,1,args.length) : null );
+            return EL.VOID;
+        case "println":
+            if( args==null || args.length<1 )
+                System.out.println();
+            else
+                System.out.println( args[0] );
             return EL.VOID;
             
         default:
