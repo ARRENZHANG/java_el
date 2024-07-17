@@ -1,4 +1,6 @@
-a simple Java-Expression parser, related to Java Expression Language.
+a simple Java-Expression parser,
+related to Java Expression Language.
+
 
 Useful
 ----------------------------------
@@ -26,7 +28,11 @@ before you write them into your code.
 Data Types 
 ----------------------------------
 supported data types :
-boolean, int/integer, long, float, string.
+bool/boolean, int/integer, long, float, string.
+
+to supply a string in expression, please use a pair of single quotation marks,
+like EL.eval("System.out.print('some string here\n');").
+
 
 Special variables
 ----------------------------------
@@ -40,6 +46,7 @@ will print out "2" on console.
 strings should be enclosed with a pair of '', for example "a='xyz';print(a);".
 
 And dont' name your variables with a start letter of "$".
+
 
 Embedded Functions
 ----------------------------------
