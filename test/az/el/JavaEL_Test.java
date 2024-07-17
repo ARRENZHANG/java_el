@@ -315,9 +315,9 @@ public class JavaEL_Test {
                 + "");
         EL.eval(context, ""
                 + "each='System.out.println#string(?$)';"
-                + "EL.each(list,each,context);"
-                + "EL.each(?friends,?each,?context);"
-                + "EL.each(?array,?each,?context);"
+                + "each(list,each,context);"
+                + "each(?friends,?each,?context);"
+                + "each(?array,?each,?context);"
                 + "");
     }
     

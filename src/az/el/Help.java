@@ -82,13 +82,4 @@ final class Help
                 : String.join(".",java.util.Arrays.copyOfRange(dots, offset, end[0]));
     }
     
-    
-    public static String trim(String expression){
-        String s;
-        return
-            (s=expression.trim()).isEmpty() ||
-            (s.charAt(s.length()-1)==';' && (s=s.substring(0,s.length()-1).trim()).isEmpty())
-            ? s : s;
-    }
-    
 }

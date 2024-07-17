@@ -42,8 +42,8 @@ public class EL
     public static int MAX_BRACKETS_DEPTH     = 5;
     public static int MAX_OP_COUNT           = 9;
     public static int MAX_VARS_IN_DEPTH      = 9;
-    
-    public static final String VAR_NAME_CONTEXT = "context";
+
+    public static final String VAR_NAME_CONTEXT         = "context";
     
     /***
      * to set classes-blacklist in context, set value for this variable.
@@ -53,8 +53,18 @@ public class EL
     public static final String VAR_NAME_CLASS_WHITELIST = "$class_whitelist";
     
     
-    public static final Object NULL = new Object();
-    public static final Object VOID = new Object();
+    public static final Object NULL = new Object(){
+        @Override
+        public String toString(){
+            return "NULL";
+        }
+    };
+    public static final Object VOID = new Object(){
+        @Override
+        public String toString(){
+            return "VOID";
+        }
+    };;
     
     static final Pattern PATTERN_LINE_SPLITER = Pattern.compile("[\n;]");
     
@@ -153,17 +163,27 @@ public class EL
         @Override
         public String readLine() throws IOException {
             int k = i++;
-            return k>=items.length ? null : items[k];
+            return k<items.length ? items[k] : null;
         }
     }
     /* end : class StringArrayReader */
+    
     
     public static <T> T eval( final Map<String,Object> eval_context, int depth, final LineReader reader)
         throws ReflectiveOperationException, IOException, ParseException
     {
         return eval( eval_context, depth, reader, false );
     }
-
+        
+    
+    
+    static String trim_expression(String expression){
+        String s;
+        return
+            (s=expression.trim()).isEmpty() ||
+            (s.charAt(s.length()-1)==';' && (s=s.substring(0,s.length()-1).trim()).isEmpty())
+            ? s : s;
+    }
     
     @SuppressWarnings("unchecked")
     public static <T> T eval( final Map<String,Object> eval_context, int depth, final LineReader reader, boolean suppress_errors)
@@ -177,15 +197,17 @@ public class EL
                 ops          = new int[MAX_BRACKETS_DEPTH],
                 funcs        = new int[MAX_BRACKETS_DEPTH]
                 ;
-        Scanner.Job[][] jobs = Scanner.Job.newArray(MAX_BRACKETS_DEPTH+1,MAX_OP_COUNT);
+        Scanner.OP[][] jobs = Scanner.OP.newArray(MAX_BRACKETS_DEPTH+1,MAX_OP_COUNT);
                 
-        StringBuilder builder = new StringBuilder( MAX_SENTENCE_LENGTH );        
+        StringBuilder buffer = new StringBuilder( MAX_SENTENCE_LENGTH );        
         Object o, result = null;
         
         for(String item = reader.readLine(); item != null; item = reader.readLine())
         {
-            if((item=Help.trim(item)).isEmpty() || Formula.PATTERN_NULL.matcher(item).matches() )
-                continue;   
+            if((item=trim_expression(item)).isEmpty() || Formula.PATTERN_NULL.matcher(item).matches() )
+                continue;
+            if( item.charAt(0)=='#' || item.charAt(0)=='/' || item.charAt(0)==';' )
+                continue;
             
         // just defined a complex string;
         // if a string contains special characters, like : +-*/%&|^!<>=
@@ -201,16 +223,16 @@ public class EL
             }
         // a complex expression, need to be processed.
         //
-            builder.ensureCapacity( item.length()+8 );
-            builder.setLength( 0 );
-            builder.append( item );
+            buffer.ensureCapacity( item.length()+8 );
+            buffer.setLength( 0 );
+            buffer.append( item );
             
             try{
-                o = Scanner.scan(context,depth,builder,brackets,commas,ops,jobs,funcs);
+                o = Scanner.scan(context,depth,buffer,brackets,commas,ops,jobs,funcs);
             }
-            catch(ReflectiveOperationException|IOException|ParseException|RuntimeException ex){
-                if(!suppress_errors ) throw ex; else
-                {
+            catch(ReflectiveOperationException|IOException|ParseException|RuntimeException ex)
+            {
+                if(!suppress_errors ) throw ex; else{
                     o = VOID;
                     System.err.println(ex.getMessage());
                 }
@@ -249,7 +271,7 @@ public class EL
      * @throws java.io.IOException
      * @throws java.text.ParseException
      */
-    public static Object iif(Object condition, Object if_true, Object or_else, Map<String,Object> context)
+    static Object iif(Object condition, Object if_true, Object or_else, Map<String,Object> context)
         throws ReflectiveOperationException, IOException, ParseException
     {
         boolean yes = condition==null 
@@ -266,7 +288,7 @@ public class EL
         }
     }
     
-    public static Object each(Object items, String exp, Map<String,Object> context) 
+    static Object each(Object items, String exp, Map<String,Object> context) 
         throws ReflectiveOperationException, IOException, ParseException
     {
         if( items==null )
@@ -291,7 +313,7 @@ public class EL
         return result;
     }
     
-    private static Object forEach_iterator(Map<String,Object> context, Iterator<?> iter, ExpressionArrayReader reader) 
+    static Object forEach_iterator(Map<String,Object> context, Iterator<?> iter, ExpressionArrayReader reader) 
         throws ReflectiveOperationException, IOException, ParseException
     {        
         Object result = null, o;

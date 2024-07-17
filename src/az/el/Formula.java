@@ -25,8 +25,10 @@ import java.util.regex.Pattern;
 final class Formula
 {
     private final String expr;
+    
+    public  Opcode op = Opcode.NONE;
     private Formula left, right;
-    public  OP op = OP.NONE;
+    
     private Object resolved;
 
     
@@ -48,7 +50,7 @@ final class Formula
         this.expr = trim_brackets(el.trim());
     }
     
-    public Formula( int depth, OP op, Formula left, Formula right ){
+    public Formula( int depth, Opcode op, Formula left, Formula right ){
         this.expr = "";
         this.op = op;
         this.left = left;
@@ -63,8 +65,8 @@ final class Formula
     
 
     static final Pattern
-            PATTERN_INT_LONG    = Pattern.compile("^[\\d]+[Ll]?$"),
-            PATTERN_FLOAT_DBL   = Pattern.compile("^[\\d]+([\\.][\\d]*)?[Ff]?$"),
+            PATTERN_INT_LONG    = Pattern.compile("^[\\d]+[L]?$",Pattern.CASE_INSENSITIVE),
+            PATTERN_FLOAT_DBL   = Pattern.compile("^[\\d]+([\\.][\\d]*)?[f]?$",Pattern.CASE_INSENSITIVE),
             PATTERN_BOOL        = Pattern.compile("^true|false$",Pattern.CASE_INSENSITIVE),
             PATTERN_NULL        = Pattern.compile("^null|undefined$",Pattern.CASE_INSENSITIVE)
             ;
@@ -85,8 +87,8 @@ final class Formula
         case LTE:
         case EQ:
         case NEQ:
-        case BIT_MOVE_R:
         case BIT_MOVE_L:
+        case BIT_MOVE_R:
         case BIT_AND:
         case BIT_OR:
         case BIT_XOR:
@@ -146,7 +148,7 @@ final class Formula
             String v,
                     dots[] = (m ? el.substring(0,i) : el).split("\\."),
                     args[] = !m ? null : (v=el.substring(i+1,el.length()-1).trim()).isEmpty() ? null : v.split("[,]");
-            Object[] objs = purify_args(args,context);
+            Object[] objs = convert_method_args(args,context);
         return
             m && dots.length==1 
             ? parse_internal_functions(dots[0].toLowerCase(),objs,context)
@@ -188,7 +190,7 @@ final class Formula
     
     
 
-    private static Object[] purify_args(String[] args, final Map<String,Object> context)
+    private static Object[] convert_method_args(String[] args, final Map<String,Object> context)
     {
         if( args==null || args.length<1 || args[0].isEmpty() )
             return null;
@@ -208,7 +210,8 @@ final class Formula
     private static Object parse_internal_functions(String func, Object[] args, final Map<String,Object> context) 
             throws ReflectiveOperationException, IOException, ParseException
     {
-        switch( func ){
+        switch( func )
+        {
         case "array":
             return args;
         case "list":
@@ -283,6 +286,7 @@ final class Formula
         }
         return refn.equals(EL.VAR_NAME_CONTEXT) ? context : context.get(refn);
     }
+    
     @SuppressWarnings("unchecked")
     private static Object setv(final Map<String,Object> context, String refn, Object param)
     {
@@ -347,10 +351,11 @@ final class Formula
         
         if( dots.length==1 ) /* set value as : "a=1", or get value as : "a" */
         {        
-            return !set_get ? get_variable(context,refn) : EL.VAR_NAME_CONTEXT.equals(refn) ? param : setv(context,refn,param);
+            return !set_get
+                ? get_variable(context,refn)
+                : EL.VAR_NAME_CONTEXT.equals(refn) ? param : setv(context,refn,param);
         }
-        else if( method )
-        {
+        else if( method ){
             return eval_method( dots, get_variable(context,refn), dots[dots.length-1], args, context );
         }
         else{
@@ -364,11 +369,13 @@ final class Formula
         
         String blacklist = null!=(o=context.get(EL.VAR_NAME_CLASS_BLACKLIST)) ? o.toString() : null;
         String whitelist = null!=(o=context.get(EL.VAR_NAME_CLASS_WHITELIST)) ? o.toString() : null;
+        
         do{
-            end[0] = dots.length-offset;
-            nm = Help.fullClassName(dots,0,end);
+            end[0] = dots.length - offset;
+            nm = Help.fullClassName( dots, 0, end );
             
-    // we don't use a class if it is in the black-list !
+    // we use classes in white-list,
+    // and we don't use a class if it is in the black-list !
     //
             if( whitelist!=null && !(
                 whitelist.contains(nm) || whitelist.contains(nm.substring(0,nm.lastIndexOf('.')+1)+"*")) )
@@ -438,7 +445,7 @@ final class Formula
     }
     
     
-    // invoke : x.Func(1,2,'a',?x,?y)
+    // invoke : x.Func(1,2,'a',x,y)
     //
     private Object eval_method(String[] dots, Object objo, String name, Object[] args, final Map<String,Object> context)
         throws ReflectiveOperationException,IOException,ParseException
@@ -509,8 +516,8 @@ final class Formula
 
         for(int i=0; i<args.length; i++)
         {
-            types[i] = args[i]==null 
-                ? String.class.getSimpleName().toLowerCase() 
+            types[i] = args[i]==null
+                ? Object.class.getSimpleName().toLowerCase() 
                 : args[i].getClass().getSimpleName().toLowerCase();
         }
         return types;
@@ -616,8 +623,10 @@ final class Formula
         return method;
     }
     
-    private static boolean el_search_method_match(Parameter[] params, final String[] types){
+    private static boolean el_search_method_match(Parameter[] params, final String[] types)
+    {
         int i = 0;
+        
         for(int m = 0;i<params.length && i<types.length;)
         {
         final String cnm = params[i].getType().getSimpleName().toLowerCase();
@@ -629,6 +638,9 @@ final class Formula
                 break;  
             case "integer":
                 m += cnm.startsWith(types[i]) ? 1 : 0;
+                break;
+            case "object":
+                m += 1;
                 break;
             default:
                 m += cnm.equals(types[i]) ? 1 : 0;
@@ -643,14 +655,14 @@ final class Formula
     
     
     public static Formula complexFormula(int depth, StringBuilder el, int offset, int to,
-        int ops, Scanner.Job[] oplist, int from, int end, Scanner.Job[] queue)
+            int ops, Scanner.OP[] oplist, int from, int end, Scanner.OP[] queue)
     {
-        Scanner.Job job;
+        Scanner.OP job;
         final int count = end-from;
         
         if( count>0 ){
             System.arraycopy( oplist, from, queue, 0, count );
-            Arrays.sort( queue, 0, count, Scanner.Job.comparator );
+            Arrays.sort( queue, 0, count, Scanner.OP.comparator );
             job = queue[0]; /* the job with lowest priority */
         }
         else{
@@ -674,7 +686,7 @@ final class Formula
         
  
     public static Object calculate(StringBuilder el, int offset, int to,
-            int ops, Scanner.Job[] oplist, Scanner.Job[] queue, final Map<String,Object> context)
+            int ops, Scanner.OP[] oplist, Scanner.OP[] queue, final Map<String,Object> context)
     {
         return ops<1
                 /* a function-calling ? like : Math.min(1,2) */

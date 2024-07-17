@@ -15,7 +15,7 @@ final class Scanner
 {
     private Scanner()
     {}    
-        
+
     private static void setPartialString(StringBuilder builder, int offset, int end, String value){
         int i = 0;
         for(;i<value.length();i++){
@@ -31,11 +31,15 @@ final class Scanner
     }
     
     private static Object eval(StringBuilder expr, int offset, int to,
-            int job_ops, Scanner.Job[] job_oplist, Scanner.Job[] job_queue, final Map<String,Object> context,
-            int stack, int[] brackets, int[] commas, int[] ops, Job[][] oplist, int[] funcs )
+            int job_ops, Scanner.OP[] job_oplist, Scanner.OP[] job_queue, final Map<String,Object> context,
+            int stack, int[] brackets, int[] commas, int[] ops, OP[][] oplist, int[] funcs )
         throws ReflectiveOperationException, IOException, ParseException
     {
-        if( stack>0 && brackets[stack]>0 && funcs[stack]>0 && token_match(expr,"iif(", stack-1,brackets,commas,ops,oplist)){
+        if( stack>0 && brackets[stack]>0 && funcs[stack]>0 && token_match(expr,"iif(", stack-1,brackets,commas,ops,oplist))
+        { /*
+           * special processing for "iif()" method-invoking.
+           * we delay the evaluation of the true-sentence and false-sentence.
+           ****/
             return new EL.Routine(expr.substring(offset,to));
         }     
         else{
@@ -43,7 +47,7 @@ final class Scanner
         }
     }
     private static boolean token_match(StringBuilder expr, String token, 
-            int stack, int[] brackets, int[] commas, int[] ops, Job[][] oplist)
+            int stack, int[] brackets, int[] commas, int[] ops, OP[][] oplist)
     {
         int m = ops[stack]>0 ? oplist[stack][ops[stack]-1].end : commas[stack]>0 ? commas[stack]+1 : brackets[stack]>0?brackets[stack]+1 : 0;
         int n = token.length(), i = 0;
@@ -53,7 +57,7 @@ final class Scanner
  
     public static Object scan(final Map<String,Object> context, int depth,
         StringBuilder expr,
-        int[] brackets, int[] commas, int[] ops, Job[][] oplist, int[] funcs
+        int[] brackets, int[] commas, int[] ops, OP[][] oplist, int[] funcs
         )
         throws ReflectiveOperationException, IOException, ParseException
     {
@@ -77,15 +81,15 @@ final class Scanner
                         || (brackets[stack]>0 && brackets[stack]==i-1)
                         || (ops[stack]>0 && oplist[stack][ops[stack]-1].end==i)
                         ;
-                    Job.set(oplist[stack], ops[stack]++, i, "++", b ? OP.SELF_ADD_left : OP.SELF_ADD_right );
+                    OP.set(oplist[stack], ops[stack]++, i, "++", b ? Opcode.SELF_ADD_left : Opcode.SELF_ADD_right );
                     i++;
                     break;
                 case '=':
-                    Job.set(oplist[stack], ops[stack]++, i, "+=", OP.ADD_TO);
+                    OP.set(oplist[stack], ops[stack]++, i, "+=", Opcode.ADD_TO);
                     i++;
                     break;
                 default:
-                    Job.set(oplist[stack], ops[stack]++, i, "+", OP.ADD);
+                    OP.set(oplist[stack], ops[stack]++, i, "+", Opcode.ADD);
                     break;
                 }
                 funcs[stack] = 0; break;
@@ -97,152 +101,152 @@ final class Scanner
                         || (brackets[stack]>0 && brackets[stack]==i-1)
                         || (ops[stack]>0 && oplist[stack][ops[stack]-1].end==i)
                         ;
-                    Job.set(oplist[stack], ops[stack]++, i, "--", b ? OP.SELF_MINUS_left : OP.SELF_MINUS_right );
+                    OP.set(oplist[stack], ops[stack]++, i, "--", b ? Opcode.SELF_MINUS_left : Opcode.SELF_MINUS_right );
                     i++;
                     break;
                 case '=':
-                    Job.set(oplist[stack], ops[stack]++, i, "-=", OP.MINUS_TO);
+                    OP.set(oplist[stack], ops[stack]++, i, "-=", Opcode.MINUS_TO);
                     i++;
                     break;
                 default:
-                    Job.set(oplist[stack], ops[stack]++, i, "-", OP.MINUS);
+                    OP.set(oplist[stack], ops[stack]++, i, "-", Opcode.MINUS);
                     break;
                 }
                 funcs[stack] = 0; break;
             case '*':
                 switch(expr.charAt(i+1)){
                 case '=':
-                    Job.set(oplist[stack], ops[stack]++, i, "*=", OP.MULTIPLY_TO);
+                    OP.set(oplist[stack], ops[stack]++, i, "*=", Opcode.MULTIPLY_TO);
                     i++;
                     break;
                 default:
-                    Job.set(oplist[stack], ops[stack]++, i, "*", OP.MULTIPLY);
+                    OP.set(oplist[stack], ops[stack]++, i, "*", Opcode.MULTIPLY);
                     break;
                 }
                 funcs[stack] = 0; break;
             case '/':
                 switch(expr.charAt(i+1)){
                 case '=':
-                    Job.set(oplist[stack], ops[stack]++, i, "/=", OP.DIVIDE_TO);
+                    OP.set(oplist[stack], ops[stack]++, i, "/=", Opcode.DIVIDE_TO);
                     i++;
                     break;
                 default:
-                    Job.set(oplist[stack], ops[stack]++, i, "/", OP.DIVIDE);
+                    OP.set(oplist[stack], ops[stack]++, i, "/", Opcode.DIVIDE);
                     break;
                 }
                 funcs[stack] = 0; break;
             case '%':
                 switch(expr.charAt(i+1)){
                 case '=':
-                    Job.set(oplist[stack], ops[stack]++, i, "%=", OP.MOD_TO);
+                    OP.set(oplist[stack], ops[stack]++, i, "%=", Opcode.MOD_TO);
                     i++;
                     break;
                 default:
-                    Job.set(oplist[stack], ops[stack]++, i, "%", OP.MOD);
+                    OP.set(oplist[stack], ops[stack]++, i, "%", Opcode.MOD);
                     break;
                 }
                 funcs[stack] = 0; break;
             case '>': // >, >=, >>
                 switch(expr.charAt(i+1)){
                 case '=':
-                    Job.set(oplist[stack], ops[stack]++, i, ">=", OP.GTE);
+                    OP.set(oplist[stack], ops[stack]++, i, ">=", Opcode.GTE);
                     i++;
                     break;
                 case '>':
-                    Job.set(oplist[stack], ops[stack]++, i, ">>", OP.BIT_MOVE_R);
+                    OP.set(oplist[stack], ops[stack]++, i, ">>", Opcode.BIT_MOVE_R);
                     i++;
                     break;
                 default:
-                    Job.set(oplist[stack], ops[stack]++, i, ">", OP.GT);
+                    OP.set(oplist[stack], ops[stack]++, i, ">", Opcode.GT);
                     break;
                 }
                 funcs[stack] = 0; break;
             case '<': // <, <=, <<
                 switch(expr.charAt(i+1)){
                 case '=':
-                    Job.set(oplist[stack], ops[stack]++, i, "<=", OP.LTE);
+                    OP.set(oplist[stack], ops[stack]++, i, "<=", Opcode.LTE);
                     i++;
                     break;
                 case '<':
-                    Job.set(oplist[stack], ops[stack]++, i, "<<", OP.BIT_MOVE_L);
+                    OP.set(oplist[stack], ops[stack]++, i, "<<", Opcode.BIT_MOVE_L);
                     i++;
                     break;
                 case '>':
-                    Job.set(oplist[stack], ops[stack]++, i, "!=", OP.NEQ);
+                    OP.set(oplist[stack], ops[stack]++, i, "!=", Opcode.NEQ);
                     i++;
                     break;
                 default:
-                    Job.set(oplist[stack], ops[stack]++, i, "<", OP.LT);
+                    OP.set(oplist[stack], ops[stack]++, i, "<", Opcode.LT);
                     break;
                 }
                 funcs[stack] = 0; break;
             case '=': // =, ==
                 switch(expr.charAt(i+1)){
                 case '=':
-                    Job.set(oplist[stack], ops[stack]++, i, "==", OP.EQ);
+                    OP.set(oplist[stack], ops[stack]++, i, "==", Opcode.EQ);
                     i++;
                     break;
                 default:
-                    Job.set(oplist[stack], ops[stack]++, i, "=", OP.SET);
+                    OP.set(oplist[stack], ops[stack]++, i, "=", Opcode.SET);
                     break;
                 }
                 funcs[stack] = 0; break;
             case '!': // !, !=
                 switch(expr.charAt(i+1)){
                 case '=':
-                    Job.set(oplist[stack], ops[stack]++, i, "!=", OP.NEQ);
+                    OP.set(oplist[stack], ops[stack]++, i, "!=", Opcode.NEQ);
                     i++;
                     break;
                 default:
-                    Job.set(oplist[stack], ops[stack]++, i, "!", OP.NOT);
+                    OP.set(oplist[stack], ops[stack]++, i, "!", Opcode.NOT);
                     break;
                 }
                 funcs[stack] = 0; break;
             case '&': // &, &&
                 switch(expr.charAt(i+1)){
                 case '=':
-                    Job.set(oplist[stack], ops[stack]++, i, "&=", OP.AND_TO);
+                    OP.set(oplist[stack], ops[stack]++, i, "&=", Opcode.AND_TO);
                     i++;
                     break;
                 case '&':
-                    Job.set(oplist[stack], ops[stack]++, i, "&&", OP.AND);
+                    OP.set(oplist[stack], ops[stack]++, i, "&&", Opcode.AND);
                     i++;
                     break;
                 default:
-                    Job.set(oplist[stack], ops[stack]++, i, "&", OP.BIT_AND);
+                    OP.set(oplist[stack], ops[stack]++, i, "&", Opcode.BIT_AND);
                     break;
                 }
                 funcs[stack] = 0; break;
             case '|': // |, ||
                 switch(expr.charAt(i+1)){
                 case '=':
-                    Job.set(oplist[stack], ops[stack]++, i, "|=", OP.OR_TO);
+                    OP.set(oplist[stack], ops[stack]++, i, "|=", Opcode.OR_TO);
                     i++;
                     break;
                 case '|':
-                    Job.set(oplist[stack], ops[stack]++, i, "||", OP.OR);
+                    OP.set(oplist[stack], ops[stack]++, i, "||", Opcode.OR);
                     i++;
                     break;
                 default:
-                    Job.set(oplist[stack], ops[stack]++, i, "|", OP.BIT_OR);
+                    OP.set(oplist[stack], ops[stack]++, i, "|", Opcode.BIT_OR);
                     break;
                 }
                 funcs[stack] = 0; break;
             case '^': 
                 switch(expr.charAt(i+1)){
                 case '=':
-                    Job.set(oplist[stack], ops[stack]++, i, "^=", OP.XOR_TO);
+                    OP.set(oplist[stack], ops[stack]++, i, "^=", Opcode.XOR_TO);
                     i++;
                     break;
                 default:
-                    Job.set(oplist[stack], ops[stack]++, i, "^", OP.BIT_XOR);
+                    OP.set(oplist[stack], ops[stack]++, i, "^", Opcode.BIT_XOR);
                     break;
                 }
                 funcs[stack] = 0; break;
             case '~':
                 switch(expr.charAt(i+1)){
                 default:
-                    Job.set(oplist[stack], ops[stack]++, i, "~", OP.BIT_NOT);
+                    OP.set(oplist[stack], ops[stack]++, i, "~", Opcode.BIT_NOT);
                     break;
                 }
                 funcs[stack] = 0; break;
@@ -306,7 +310,7 @@ final class Scanner
                 break;
                 
             case '\'': /* to prevent the evaluation being interfered by a string which contains special characters */
-                x = searchNextSingleQuote(expr,i+1);
+                x = searchNextSinglequote(expr,i+1);
                 m = 0x03ffff & (x);
                 x = 0x003fff & (x>>18); /* special chars */
                 
@@ -329,7 +333,7 @@ final class Scanner
             Formula.calculate( expr, 0, i, ops[stack], oplist[stack], oplist[oplist.length-1], context );
     }
     
-    private static int searchNextSingleQuote(CharSequence s, int from)
+    private static int searchNextSinglequote(CharSequence s, int from)
     {
         int f = s.length()+1, special = 0;
         
@@ -348,13 +352,13 @@ final class Scanner
     }
     
     
-    static class Job
+    static class OP
     {
         public int index, position, end;
         public String operator;
-        public OP op;
+        public Opcode op;
         
-        public void set(int index, int position, String operator, OP op){
+        public void set(int index, int position, String operator, Opcode op){
             this.index = index;
             this.position = position;
             this.operator = operator;
@@ -362,20 +366,20 @@ final class Scanner
             this.end = position+operator.length();
         }        
         
-        public static void set(Job[] jobs, int index, int position, String operator, OP op){
+        public static void set(OP[] jobs, int index, int position, String operator, Opcode op){
             if( jobs[index]==null ){
-                jobs[index]= new Job();
+                jobs[index]= new OP();
             }
             jobs[index].set(index, position,operator,op);
         }
         
-        public static Job[][] newArray(int size, int elements){
-            Job[][] jobs = new Job[size][];
-            for(int i=0;i<size;i++) jobs[i]=new Job[elements];
+        public static OP[][] newArray(int size, int elements){
+            OP[][] jobs = new OP[size][];
+            for(int i=0;i<size;i++) jobs[i]=new OP[elements];
             return jobs;
         }
         
-        static final Comparator<Job> comparator = (a,b)->Integer.compare(a.op.priority,b.op.priority);
+        static final Comparator<OP> comparator = (a,b)->Integer.compare(a.op.priority,b.op.priority);
     }
     /* end : class Job */
 }

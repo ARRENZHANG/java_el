@@ -7,7 +7,7 @@ interface Calculator
     public final static Calculator DUMMY = (a,b)->null;
 } 
 
-enum OP
+enum Opcode
 {
     SET(1,"=", Calculator.DUMMY), 
     AND(8,"&&",
@@ -182,7 +182,7 @@ enum OP
     public final String operator;
     public final Calculator calculator;
 
-    private OP(int priority, String operator, Calculator func){
+    private Opcode(int priority, String operator, Calculator func){
         this.priority = priority;
         this.operator = operator;
         this.calculator = func;

@@ -96,9 +96,9 @@ use "each(a_list_object)", the same as "each(a_list_object,'println($)')".
 5: iif()
 used to check given condition and then return corresponding value.
 for example:
-    x=iif(a>1, obj.doSomething(a), obj.doOther(a))
+    x=iif(a>1, obj.doSomething(a), obj.doAnother(a))
 will evaluate the sub-expression "obj.doSomething(a)" only if "a>1", and never
-evaluate "obj.doOther(a)" anyway. we delayed the expression-evaluation.
+evaluate "obj.doAnother(a)" anyway. we delayed the expression-evaluation.
 
 6: print(), println(), printf().
 used to print something out on console, 
@@ -164,4 +164,7 @@ to narrow down what class can be used in expression.
 "foreach(map('a',1,'b',2))"
 
 [Issues ?]
+do not use very long expressions,
+it's much better to be shorter than 128 chars.
+
 you can contact me through email : arrenzhang@hotmail.com .
