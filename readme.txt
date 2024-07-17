@@ -90,6 +90,10 @@ it's possible to provide a list of classes which shouldn't be used in code.
     context.put(EL.VAR_NAME_CLASS_BLACKLIST, "a.SomeClass,b.*")
 to disable some classes.
 
+and you can setup a white-list
+    context.put(EL.VAR_NAME_CLASS_WHITELIST, "a.SomeClass,b.*")
+to narrow down what class can be used in expression.
+
 
 Expression Examples
 ----------------------------------

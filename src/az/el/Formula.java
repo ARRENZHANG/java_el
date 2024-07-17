@@ -29,12 +29,27 @@ final class Formula
     public  OP op = OP.NONE;
     private Object resolved;
 
+    
+    private static <T> T throwError(String error){
+        throw new IllegalArgumentException(error);
+    }
+    private static String trim_brackets(String s){
+        return s!=null && s.length()>1 
+            && s.charAt(0)=='(' && s.charAt(s.length()-1)==')' && s.indexOf('(',1)<0
+            ?  s.substring(1,s.length()-1).trim() 
+            :  s;
+    }
+    private static String trim_number_dot(String s){ /* "1.0" -> "1" */
+        int i;
+        return (i=s.indexOf('.'))>0 ? s.substring(0,i) : s;
+    }
+    
     public Formula( int depth, String el ){
         this.expr = trim_brackets(el.trim());
     }
     
     public Formula( int depth, OP op, Formula left, Formula right ){
-        this.expr = null;
+        this.expr = "";
         this.op = op;
         this.left = left;
         this.right = right;
@@ -43,7 +58,7 @@ final class Formula
     
     @Override
     public String toString(){
-        return (expr!=null ? expr : "") + (left!=null?left.toString():"") + op.operator + (right!=null?right.toString():"");
+        return expr + (left!=null?left.toString():"") + op.operator + (right!=null?right.toString():"");
     }
     
 
@@ -112,7 +127,7 @@ final class Formula
             break;
             
         default: /* a simple value-convert, or a field-reading or a method-calling */
-            resolved = expr==null || expr.isEmpty() ? EL.VOID : evaluate( expr, false, null, context );
+            resolved = expr.isEmpty() ? EL.VOID : evaluate( expr, false, null, context );
             break;
         }
         return resolved;
@@ -128,13 +143,13 @@ final class Formula
         {
             int i = 0;
             boolean m = el.charAt(el.length()-1)==')' && (i=el.indexOf('('))>0; /* like : a.b.c.func(1,2) or a.b.c.field */
-            String v, 
+            String v,
                     dots[] = (m ? el.substring(0,i) : el).split("\\."),
                     args[] = !m ? null : (v=el.substring(i+1,el.length()-1).trim()).isEmpty() ? null : v.split("[,]");
             Object[] objs = purify_args(args,context);
         return
             m && dots.length==1 
-            ? parse_internal_functions(dots[0],objs,context)
+            ? parse_internal_functions(dots[0].toLowerCase(),objs,context)
             : evaluate( m,
                     dots, /* elements/dots, like : a.b.c.func or a.b.c.field */
                     objs, /* args, like : [1,2] ; or null for non-method */
@@ -144,15 +159,10 @@ final class Formula
             throw new IllegalArgumentException( toString(),ex );
         }
     }
-
-    private static boolean is_string(String exp){
-        return exp.length()>1 && exp.charAt(0)=='\'' && exp.charAt(exp.length()-1)=='\'';
-    }
-
-    
+  
     private static Object checkAndUseSimpleExpression( String exp )
     {        
-        if( is_string(exp) ){
+        if( exp.length()>1 && exp.charAt(0)=='\'' && exp.charAt(exp.length()-1)=='\'' ){
             return exp.substring(1,exp.length()-1); 
         }
         if( PATTERN_NULL.matcher(exp).matches() )
@@ -177,16 +187,6 @@ final class Formula
     }
     
     
-    private static String trim_brackets(String s){
-        return s!=null && s.length()>1 
-            && s.charAt(0)=='(' && s.charAt(s.length()-1)==')' && s.indexOf('(',1)<0
-            ?  s.substring(1,s.length()-1).trim() 
-            :  s;
-    }
-    private static String trim_number_dot(String s){ /* "1.0" -> "1" */
-        int i;
-        return (i=s.indexOf('.'))>0 ? s.substring(0,i) : s;
-    }
 
     private static Object[] purify_args(String[] args, final Map<String,Object> context)
     {
@@ -208,7 +208,7 @@ final class Formula
     private static Object parse_internal_functions(String func, Object[] args, final Map<String,Object> context) 
             throws ReflectiveOperationException, IOException, ParseException
     {
-        switch(func.toLowerCase()){
+        switch( func ){
         case "array":
             return args;
         case "list":
@@ -233,18 +233,11 @@ final class Formula
                 args.length>3 && Map.class.isInstance(args[3]) ? (Map<String,Object>)args[3] : context
             );
             
-        case "print":
-            System.out.print( args[0] );
-            return EL.VOID;
         case "printf":
-            System.out.printf( args[0].toString(), args.length>1 ? Arrays.copyOfRange(args,1,args.length) : null );
-            return EL.VOID;
+            args = new Object[]{args[0], args.length<2 ? null : Arrays.copyOfRange(args,1,args.length)};
+        case "print":
         case "println":
-            if( args==null || args.length<1 )
-                System.out.println();
-            else
-                System.out.println( args[0] );
-            return EL.VOID;
+            return execute_method(java.io.PrintStream.class, System.out, func, args, context );
             
         default:
             throw new IllegalArgumentException("InvalidInternalMethod_"+func);
@@ -314,9 +307,6 @@ final class Formula
         return param;
     }
 
-    private static <T> T throwError(String error){
-        throw new IllegalArgumentException(error);
-    }
     
     public final static Object convert(Object obj, Class<?> need)
     {
@@ -351,6 +341,8 @@ final class Formula
         final Map<String,Object> context)
         throws ReflectiveOperationException,IOException,ParseException
     {
+    // a string : "?var" should be processed.
+    //
         final String refn = (dots[0].length()>1 && dots[0].charAt(0)=='?' ? dots[0].substring(1) : dots[0]).trim();
         
         if( dots.length==1 ) /* set value as : "a=1", or get value as : "a" */
@@ -370,13 +362,19 @@ final class Formula
     {
         int offset = 1; Class<?> c = null; String nm; Object o;
         
-        String blacklist = null!=(o=context.get(EL.VAR_NAME_CLASS_BLACKLIST)) ? o.toString() : "";
+        String blacklist = null!=(o=context.get(EL.VAR_NAME_CLASS_BLACKLIST)) ? o.toString() : null;
+        String whitelist = null!=(o=context.get(EL.VAR_NAME_CLASS_WHITELIST)) ? o.toString() : null;
         do{
             end[0] = dots.length-offset;
             nm = Help.fullClassName(dots,0,end);
             
     // we don't use a class if it is in the black-list !
     //
+            if( whitelist!=null && !(
+                whitelist.contains(nm) || whitelist.contains(nm.substring(0,nm.lastIndexOf('.')+1)+"*")) )
+            {
+                throw new java.lang.SecurityException("ClassNotInWhitelist_"+nm);
+            }
             if( blacklist!=null && (
                 blacklist.contains(nm) || blacklist.contains(nm.substring(0,nm.lastIndexOf('.')+1)+"*")) )
             {
@@ -467,7 +465,14 @@ final class Formula
             claz = field.getType();
             objo = field.get( objo );
         }
-        
+        return execute_method( claz, objo, name, args, context );
+    }
+    
+    // execute specified method on given class/object, with given parameters.
+    //
+    private static Object execute_method(Class<?> claz, Object objo,  String name, Object[] args, final Map<String,Object> context)
+        throws ReflectiveOperationException,IOException,ParseException
+    {
         final RefBoolean void_return = new RefBoolean(false);
         
     // find out correct method with given name, and invoke it.
@@ -592,7 +597,7 @@ final class Formula
         for(Executable m : list )
         {
             if((list.length<2 && exact.length<2)
-            || (m.getParameterCount()>=args_count && el_search_method_match(m.getParameters(),types)) )
+            || (m.getParameterCount()==args_count && el_search_method_match(m.getParameters(),types)) )
             {                          
                 method = m; method.setAccessible( true ); break;
             }

@@ -51,6 +51,7 @@ public class EL
      * value can be : "com.x.Class,com.y.Class" or "com.x.*,com.y.*".
      */
     public static final String VAR_NAME_CLASS_BLACKLIST = "$class_blacklist";
+    public static final String VAR_NAME_CLASS_WHITELIST = "$class_whitelist";
     
     
     public static final Object NULL = new Object();

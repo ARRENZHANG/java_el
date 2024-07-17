@@ -336,22 +336,7 @@ final class Scanner
         for(int i=from, k=0; i<s.length() && k<1; i++){
             switch(s.charAt(i))
             {
-            case '+':
-            case '-':
-            case '*':
-            case '/':
-            case '%':
-            case '>': // >, >=, >>
-            case '<': // <, <=, <<
-            case '=': // =, ==
-            case '!': // !, !=
-            case '&': // &, &&
-            case '|': // |, ||
-            case '^': //
-            case '~':
-            case ',':
-            case '(':
-            case ')':
+            case ',': /* will crash the method-calling procedure */
                 special++;
                 break;
             case '\'':

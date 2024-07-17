@@ -62,6 +62,19 @@ public class JavaEL_Test {
     @Test
     public void test_0b_01() throws ReflectiveOperationException, IOException, ParseException
     {        
+        EL.eval(new String[]{"a=2;","printf('(a=%d)\n',a)"});
+        
+        EL.eval(""
+                + "a=2;"
+                + "println();"
+                + "print(a);"
+                + "print('abc');"
+                + "println(a);"
+                + "");
+    }
+    @Test
+    public void test_0b_02() throws ReflectiveOperationException, IOException, ParseException
+    {        
         EL.eval("System.out.println(Math.max(2*3+1,Runtime.getRuntime().availableProcessors()*2))");
     }
     
