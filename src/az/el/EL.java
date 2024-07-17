@@ -11,21 +11,20 @@ import java.util.regex.Pattern;
 /**
  * evaluate a simple <b>expression</b> and export the result to caller.
  * <br>
- * the <b>expressions</b> can be specified like this, for example: 
- * <ul>
- * <li> "java.lang.System.out;?.print#String('hello');?.print(' ');?.print('world')"
- * <li> "java.lang.Math.max#int(1,2)"
- * <li> "com.some.Class.prop='word'"
- * <li> "com.some.Class.method#string#int('a',1,?)"
- * <li> "5*java.lang.Runtime.getRuntime().availableProcessors()"
- * <li> "Math.max#int(5*Runtime.getRuntime().availableProcessors(),8*3)"
- * <li> "EL.iif(a>b,c,d);"
- * <li> "list=array('a','b','c');func='System.out.println#string($);EL.each(list,func,context);"
- * </ul>
- * etc.
- * <p>
+ * the <b>expressions</b> can be specified like this, for example:
+ * <pre>
+        "java.lang.System.out.print#string('hello');System.out.println('world')"
+        "java.lang.Math.max#int(1,2)"
+        "com.some.Class.prop='word'"
+        "com.some.Class.method#string#int('a',1,?)"
+        "var=com.SomeClass.new#string('jacky');var.sayHello('iAmLucy')"
+        "2*Math.max#int(5*Runtime.getRuntime().availableProcessors(),8*3)+3*4-1"
+        "iif(a>b,c,com.SomeClass.doSomething('x'));"
+        "var=array('a','b','c');each(var,'System.out.println#string($)');"
+        "foreach(map('a',1,'b',2))"
+ * </pre>
  * you can invoke the class like : <br><code>
- *      int n = EL.eval("a=1;java.lang.Math.max#int(?a,5*java.lang.Runtime.getRuntime().availableProcessors())");
+ *      int n = EL.eval("var=1;java.lang.Math.max#int(var,5*java.lang.Runtime.getRuntime().availableProcessors())");
  * </code>
  * @author arren
  */

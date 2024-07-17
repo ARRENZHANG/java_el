@@ -150,20 +150,20 @@ enum OP
     DIVIDE_TO(4,"/=",DIVIDE.calculator),
     MOD_TO(4,"%=",MOD.calculator),
     
-    OR_TO(4,"|=",(a,b)->{
-        if( a instanceof Boolean && b instanceof Boolean){
-            return Boolean.class.cast(a) || Boolean.class.cast(b);
-        }
-        else{
-            return Integer.parseInt(a.toString()) | Integer.parseInt(b.toString());
-        }
-    }),
     AND_TO(4,"&=",(a,b)->{
         if( a instanceof Boolean && b instanceof Boolean){
             return Boolean.class.cast(a) && Boolean.class.cast(b);
         }
         else{
             return Integer.parseInt(a.toString()) & Integer.parseInt(b.toString());
+        }
+    }),
+    OR_TO(4,"|=",(a,b)->{
+        if( a instanceof Boolean && b instanceof Boolean){
+            return Boolean.class.cast(a) || Boolean.class.cast(b);
+        }
+        else{
+            return Integer.parseInt(a.toString()) | Integer.parseInt(b.toString());
         }
     }),
     XOR_TO(4,"^=",(a,b)->{
@@ -175,7 +175,8 @@ enum OP
         }
     }),
     
-    NONE(0," ", Calculator.DUMMY);
+    NONE(0," ", Calculator.DUMMY) /* a simple expression, evaluate it directly */
+    ;
 
     public final int priority;
     public final String operator;
@@ -187,7 +188,9 @@ enum OP
         this.calculator = func;
     }
    
+    @Override
     public String toString(){
         return operator;
     }
+    
 }
