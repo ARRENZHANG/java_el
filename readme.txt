@@ -39,6 +39,8 @@ use
 will print out "2" on console.
 strings should be enclosed with a pair of '', for example "a='xyz';print(a);".
 
+And dont' name your variables with a start letter of "$".
+
 Embedded Functions
 ----------------------------------
 1, map()
@@ -70,6 +72,15 @@ Supported operators
 + - * / % ! & | ^ ~ >> << =
 != == > < >= <= ++ --
 a+=1 a-=1 a*=1 a/=1
+
+
+Special characters
+----------------------------------
+;  <semicolon>
+\n <line-feed>
+if a (;\n) included in a string, you can't feed it to eval(String exp),
+use EL.eval(String[] exp) instead.
+
 
 Method invoking
 ----------------------------------
