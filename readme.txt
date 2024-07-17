@@ -163,5 +163,5 @@ to narrow down what class can be used in expression.
 "var=array('a','b','c');each(var,'System.out.println#string($)');"
 "foreach(map('a',1,'b',2))"
 
-[Found any Issues ?]
+[Issues ?]
 you can contact me through email : arrenzhang@hotmail.com .
