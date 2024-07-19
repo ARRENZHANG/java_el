@@ -5,8 +5,8 @@ related to Java Expression Language.
 Summary
 =======================================================
 
-1: provide you the possibility to configure your programs with Dynamic parameters.  
-
+-1-  
+provide you the possibility to configure your programs with Dynamic parameters.  
 for example, a configure-file looks like :
 
 ```properties
@@ -24,7 +24,8 @@ tomcat.setMaxThreads(EL.eval(config.get("some.property")));
 will make your tomcat service run with correct threads number based on the machine it is running in.  
 this makes you use proper CPU/Memory resources for you application when it is running in different server, not a static value for all different servers in a cluster.   
 
-2: a command line program `EL.main()` can be used to parse user input, and test the logical
+-2-  
+a command line program `EL.main()` can be used to parse user input, and test the logical
 before you write them into your code.   
 
 for example:
