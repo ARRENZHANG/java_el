@@ -1,5 +1,4 @@
-a simple Java-Expression parser  
-related to Java Expression Language.
+a simple Java-Expression-Language parser / EL / Java EL
 
 
 Summary
